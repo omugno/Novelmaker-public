@@ -1,6 +1,8 @@
 // Generierung: Parameter bestimmen, streamen, protokollieren.
 import type { ServerResponse } from 'node:http';
 import {
+  CONTINUITY_RESPONSE_FORMAT,
+  CONTINUITY_TYPE,
   WORDS_OPTION_NAMES,
   LENGTH_OPTION_NAMES,
   estimateMessagesTokens,
@@ -27,6 +29,9 @@ export function buildParams(db: DB, model: ModelRef, prep: Prepared | null, over
     const words = inputNumber(prep.prompt, prep.components, prep.inputs, WORDS_OPTION_NAMES);
     if (words && words > 0) params.max_tokens = Math.round(words * settings.maxTokensFactor + settings.maxTokensBuffer);
   }
+  // Continuity check: ask for JSON in a fixed shape (llama.cpp turns the schema into a grammar).
+  // A collection can switch it off with "response_format": "" (some servers reject the field).
+  if (prep?.prompt.type === CONTINUITY_TYPE && !('response_format' in params)) params.response_format = CONTINUITY_RESPONSE_FORMAT;
   for (const [k, v] of Object.entries(params)) if (v === '' || v === null) delete params[k];
   return params;
 }

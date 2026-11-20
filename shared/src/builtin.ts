@@ -681,6 +681,20 @@ const BLOCK_BUILTINS: BlockBuiltinDef[] = [
     }),
   },
   {
+    key: 'continuity-check',
+    type: 'continuity-check',
+    name: { de: 'Kontinuität prüfen', en: 'Check continuity', es: 'Revisar coherencia', uk: 'Перевірити узгодженість', it: 'Verifica coerenza', fr: 'Vérifier la cohérence' },
+    description: {
+      de: 'Vergleicht die Szene (oder die Markierung) mit Kodex, bisheriger Handlung und dem Ende der vorigen Szene und markiert Widersprüche im Text.',
+      en: 'Compares the scene (or the selection) with the codex, the story so far and the end of the previous scene, and marks contradictions in the text.',
+      es: 'Compara la escena (o la selección) con el códice, la historia hasta ahora y el final de la escena anterior, y marca las contradicciones en el texto.',
+      uk: 'Порівнює сцену (або виділення) з кодексом, попередніми подіями й кінцем попередньої сцени та позначає суперечності в тексті.',
+      it: 'Confronta la scena (o la selezione) con il codex, la storia finora e la fine della scena precedente, e segna le contraddizioni nel testo.',
+      fr: 'Compare la scène (ou la sélection) avec le codex, l’histoire jusqu’ici et la fin de la scène précédente, et signale les contradictions dans le texte.',
+    },
+    spec: (lang) => newBlockSpec('continuity-check', lang),
+  },
+  {
     key: 'chat',
     type: 'workshop-chat',
     name: { de: 'Freier Chat', en: 'Free chat', es: 'Chat libre', uk: 'Вільний чат', it: 'Chat libera', fr: 'Chat libre' },

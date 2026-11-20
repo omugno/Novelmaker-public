@@ -24,3 +24,4 @@ export * from './lint';
 export * from './i18n';
 export * from './i18n/extract';
 export * from './promptlang';
+export * from './continuity';

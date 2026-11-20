@@ -28,6 +28,7 @@ import {
   WORDS_OPTION,
   type PlaceholderKey,
 } from './promptlang';
+import { CONTINUITY_TYPE, ROLE_CONTINUITY, TASK_CONTINUITY } from './continuity';
 
 // ---------------------------------------------------------------- Typen
 
@@ -72,16 +73,18 @@ export interface BlockPromptSpec {
   options: PromptOption[];
 }
 
-export type PromptKindForBlocks = 'scene-beat-completion' | 'continue-writing' | 'text-replacement' | 'summary' | 'workshop-chat';
+export type PromptKindForBlocks = 'scene-beat-completion' | 'continue-writing' | 'text-replacement' | 'summary' | 'workshop-chat' | 'continuity-check';
 
-export const BLOCK_PROMPT_TYPES: PromptKindForBlocks[] = ['scene-beat-completion', 'continue-writing', 'text-replacement', 'summary', 'workshop-chat'];
+export const BLOCK_PROMPT_TYPES: PromptKindForBlocks[] = ['scene-beat-completion', 'continue-writing', 'text-replacement', 'summary', 'workshop-chat', 'continuity-check'];
 
 const BEAT: PromptType = 'scene-beat-completion';
 const CONT: PromptType = 'continue-writing';
 const EDIT: PromptType = 'text-replacement';
 const SUM: PromptType = 'summary';
 const CHAT: PromptType = 'workshop-chat';
-const ALL: PromptType[] = [BEAT, CONT, EDIT, SUM, CHAT];
+/** Continuity check: the scene (or a selection) is checked against codex, story so far and the previous scene */
+const CHK: PromptType = CONTINUITY_TYPE;
+const ALL: PromptType[] = [BEAT, CONT, EDIT, SUM, CHAT, CHK];
 
 export interface BlockDef {
   kind: BlockKind;
@@ -103,7 +106,7 @@ export const BLOCK_DEFS: BlockDef[] = [
     hint: N_('Whatever is under “Novel → Additional instructions for the AI”.'),
     group: 'instructions',
     types: ALL,
-    defaults: (t) => on(t !== SUM),
+    defaults: (t) => on(t !== SUM && t !== CHK),
   },
   {
     kind: 'bannedWords',
@@ -120,7 +123,7 @@ export const BLOCK_DEFS: BlockDef[] = [
     hint: N_('Title, author, language, tense, series and volume, blurb.'),
     group: 'context',
     types: ALL,
-    defaults: (t) => on(t === CHAT),
+    defaults: (t) => on(t === CHAT || t === CHK),
   },
   {
     kind: 'codex',
@@ -136,7 +139,7 @@ export const BLOCK_DEFS: BlockDef[] = [
     hint: N_('The summaries of all scenes before this scene.'),
     group: 'context',
     types: ALL,
-    defaults: (t) => on(t === BEAT || t === CONT),
+    defaults: (t) => on(t === BEAT || t === CONT || t === CHK),
   },
   {
     kind: 'sceneSummary',
@@ -159,7 +162,7 @@ export const BLOCK_DEFS: BlockDef[] = [
     label: N_('Choose context when running'),
     hint: N_('Freely add acts, chapters, scenes, codex entries, snippets, or the whole novel each time (in chat: the context picker).'),
     group: 'context',
-    types: [BEAT, CONT, EDIT, CHAT],
+    types: [BEAT, CONT, EDIT, CHAT, CHK],
     defaults: (t) => on(t !== EDIT),
   },
   {
@@ -167,9 +170,9 @@ export const BLOCK_DEFS: BlockDef[] = [
     label: N_('End of the previous scene'),
     hint: N_('Only at the start of a scene: the last words of the previous scene.'),
     group: 'text',
-    types: [BEAT, CONT],
+    types: [BEAT, CONT, CHK],
     params: ['words', 'samePov'],
-    defaults: () => on(true, { words: 650, samePov: true }),
+    defaults: (t) => (t === CHK ? on(true, { words: 1000, samePov: false }) : on(true, { words: 650, samePov: true })),
   },
   {
     kind: 'textBefore',
@@ -192,9 +195,9 @@ export const BLOCK_DEFS: BlockDef[] = [
   {
     kind: 'selection',
     label: N_('Selected text'),
-    hint: N_('The passage to be edited.'),
+    hint: N_('The passage to be edited or checked.'),
     group: 'text',
-    types: [EDIT],
+    types: [EDIT, CHK],
     defaults: () => on(true),
   },
 ];
@@ -284,6 +287,8 @@ export function defaultTexts(type: PromptType, lang: Lang = getLang()): Pick<Blo
       return { role: ROLE_SUMMARY[lang], task: TASK_SUMMARY[lang], options: [words(['100', '150', '250'], '150', LENGTH_OPTION[lang])] };
     case CHAT:
       return { role: ROLE_CHAT[lang], task: TASK_CHAT[lang], options: [] };
+    case CHK:
+      return { role: ROLE_CONTINUITY[lang], task: TASK_CONTINUITY[lang], options: [] };
     default:
       return { role: '', task: '', options: [] };
   }
@@ -438,7 +443,15 @@ export function compileBlockPrompt(spec: BlockPromptSpec, type: PromptType, lang
   const before = b('textBefore');
   const prev = b('previousSceneEnd');
   const beforeExpr = (w: number | undefined) => (w && w > 0 ? `wordsBefore(${Math.round(w)})` : 'textBefore');
-  const prevCond = (c: BlockConfig) => (c.samePov !== false ? 'and(isStartOfText, pov.character is pov.character(scene.previous))' : 'isStartOfText');
+  // Continuity check: the previous scene always counts (there is no cursor); otherwise only at the start of the text
+  const prevCond = (c: BlockConfig) =>
+    type === CHK
+      ? c.samePov !== false
+        ? 'and(scene.previous, pov.character is pov.character(scene.previous))'
+        : 'scene.previous'
+      : c.samePov !== false
+        ? 'and(isStartOfText, pov.character is pov.character(scene.previous))'
+        : 'isStartOfText';
   const prevExpr = (c: BlockConfig) => `lastWords(scene.fullText(scene.previous), ${Math.max(1, Math.round(c.words ?? 650))})`;
   const example: string[] = [];
   if (before?.asExample) {
@@ -461,6 +474,7 @@ export function compileBlockPrompt(spec: BlockPromptSpec, type: PromptType, lang
     task.push(`{#if ${e}}\n${isEdit ? F.afterEdit : F.afterWrite}:\n${tag(F.tagAfter, `{${e}}`)}\n{#endif}`);
   }
   if (type === EDIT && !b('selection')) warnings.push(t('“Selected text” is off — the AI won’t receive the passage to edit.'));
+  if (type === CHK && !b('selection')) warnings.push(t('“Selected text” is off — the AI won’t receive the passage to check.'));
 
   const role = compileText(spec.role, options, warnings);
   inputs.unshift(...options.map((o) => optionToInput(o, lang)));

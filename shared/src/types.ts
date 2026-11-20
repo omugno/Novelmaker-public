@@ -270,6 +270,7 @@ export type PromptType =
   | 'text-replacement'
   | 'summary'
   | 'workshop-chat'
+  | 'continuity-check'
   | 'component'
   | (string & {});
 
@@ -279,6 +280,7 @@ export const PROMPT_TYPES: { value: PromptType; label: string }[] = [
   { value: 'text-replacement', label: N_('Edit text') },
   { value: 'summary', label: N_('Summary') },
   { value: 'workshop-chat', label: N_('Chat') },
+  { value: 'continuity-check', label: N_('Continuity check') },
   { value: 'component', label: N_('Component') },
 ];
 
@@ -494,7 +496,7 @@ export const DEFAULT_APP_SETTINGS: AppSettings = {
 
 /** Anfrage für eine Generierung bzw. Vorschau. */
 export interface GenerateRequest {
-  kind: 'beat' | 'continue' | 'rewrite' | 'chat' | 'summary' | 'preview';
+  kind: 'beat' | 'continue' | 'rewrite' | 'chat' | 'summary' | 'preview' | 'continuity';
   promptId?: string;
   /** Ungespeicherter Prompt (Werkstatt-Vorschau) */
   prompt?: Pick<Prompt, 'type' | 'name' | 'messages' | 'inputs'>;
