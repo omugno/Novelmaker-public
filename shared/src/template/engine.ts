@@ -298,7 +298,7 @@ export class RenderEnv {
   // ------------------------------------------------------------ Kodex-Kontext
 
   getMatcher(): CodexMatcher {
-    if (!this.matcher) this.matcher = new CodexMatcher(this.codex);
+    if (!this.matcher) this.matcher = new CodexMatcher(this.codex, { language: this.data.novel.language });
     return this.matcher;
   }
 

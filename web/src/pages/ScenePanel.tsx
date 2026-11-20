@@ -16,7 +16,7 @@ import {
 } from '../components/ai';
 import { Badge, Button, cn, confirmDialog, Field, formatDate, IconButton, Input, Modal, Popover, Select, Spinner, Tabs, Textarea } from '../components/ui';
 import { api } from '../lib/api';
-import { invalidateNovel, keys, patchSettings, queryClient, useCodex, useOutline, useSnapshots } from '../lib/queries';
+import { invalidateNovel, keys, patchSettings, queryClient, useCodex, useNovel, useOutline, useSnapshots } from '../lib/queries';
 import { toast, useGen } from '../lib/store';
 import { useActiveEditor, fullText } from '../editor/scope';
 import { POV_OPTIONS, PovSelect } from './LibraryPage';
@@ -284,6 +284,7 @@ function SummaryGenerator({ novelId, sceneId, onAccept }: { novelId: string; sce
 
 function SceneCodex({ novelId, sceneId }: { novelId: string; sceneId: string }) {
   const { data } = useCodex(novelId);
+  const { data: novel } = useNovel(novelId);
   const editor = useActiveEditor((s) => (s.sceneId === sceneId ? s.editor : null));
   const [tick, setTick] = useState(0);
   useEffect(() => {
@@ -296,8 +297,8 @@ function SceneCodex({ novelId, sceneId }: { novelId: string; sceneId: string }) 
   }, [editor]);
   const counts = useMemo(() => {
     if (!data || !editor) return new Map<string, number>();
-    return new CodexMatcher(effectiveCodex(data.entries).entries).countMentions(fullText(editor));
-  }, [data, editor, tick]); // eslint-disable-line react-hooks/exhaustive-deps
+    return new CodexMatcher(effectiveCodex(data.entries).entries, { language: novel?.language }).countMentions(fullText(editor));
+  }, [data, editor, tick, novel?.language]); // eslint-disable-line react-hooks/exhaustive-deps
   const mentioned = (data?.entries ?? []).filter((e) => counts.has(e.id)).sort((a, b) => (counts.get(b.id) ?? 0) - (counts.get(a.id) ?? 0));
   const always = (data?.entries ?? []).filter((e) => e.inclusion === 'always');
   if (!editor) return <div className="text-sm text-stone-500">{t('Click in the text to see the mentions.')}</div>;

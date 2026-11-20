@@ -33,8 +33,10 @@ import { t } from '../lib/i18n';
 
 export function useCodexMatcher(novelId: string) {
   const { data } = useCodex(novelId);
-  // Band-Fassungen ersetzen gleichnamige Serien-Einträge (wie im Prompt)
-  return useMemo(() => (data ? new CodexMatcher(effectiveCodex(data.entries).entries) : null), [data]);
+  const { data: novel } = useNovel(novelId);
+  const language = novel?.language;
+  // Band-Fassungen ersetzen gleichnamige Serien-Einträge (wie im Prompt); Endungen/Akzente nach Romansprache
+  return useMemo(() => (data ? new CodexMatcher(effectiveCodex(data.entries).entries, { language }) : null), [data, language]);
 }
 
 /** Attribute des Editor-Elements; `lang` = Sprache des Romans (für die Rechtschreibprüfung) */

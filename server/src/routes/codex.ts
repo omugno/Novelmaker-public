@@ -2,7 +2,7 @@ import type { FastifyInstance } from 'fastify';
 import { CodexMatcher, t, type Snippet } from '@novelmaker/shared';
 import type { AppContext } from '../app';
 import * as C from '../repo/codex';
-import { getOutline } from '../repo/novels';
+import { getNovel, getOutline } from '../repo/novels';
 import { getAppSettings } from '../repo/settings';
 import { createBackup } from '../services/backup';
 import { loadActs } from '../services/promptdata';
@@ -38,7 +38,7 @@ export function registerCodexRoutes(app: FastifyInstance, { db }: AppContext) {
   /** In welchen Szenen wird ein Eintrag erwähnt? */
   app.get<{ Params: P; Querystring: { novelId: string } }>('/api/codex/:id/mentions', async (req) => {
     const entry = C.getCodex(db, req.params.id);
-    const matcher = new CodexMatcher([{ ...entry, inclusion: 'auto' }]);
+    const matcher = new CodexMatcher([{ ...entry, inclusion: 'auto' }], { language: getNovel(db, req.query.novelId).language });
     const outline = getOutline(db, req.query.novelId);
     const acts = loadActs(db, req.query.novelId);
     const out: { sceneId: string; chapterTitle: string; sceneIndex: number; count: number }[] = [];

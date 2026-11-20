@@ -2,6 +2,7 @@ import type { FastifyInstance } from 'fastify';
 import { CodexMatcher, effectiveCodex, t, type AppSettings } from '@novelmaker/shared';
 import type { AppContext } from '../app';
 import { listCodexForNovel, listSnippets } from '../repo/codex';
+import { getNovel } from '../repo/novels';
 import { getAppSettings, updateAppSettings } from '../repo/settings';
 import { exportJson, listBackups } from '../services/backup';
 import type { SummaryJobOptions } from '../services/jobs';
@@ -84,7 +85,7 @@ export function registerMiscRoutes(app: FastifyInstance, { db, jobs }: AppContex
   /** Kodex-Erwähnungen je Szene (für die Plan-Ansicht). */
   app.get<{ Params: P }>('/api/novels/:id/mentions', async (req) => {
     const entries = effectiveCodex(listCodexForNovel(db, req.params.id)).entries;
-    const matcher = new CodexMatcher(entries);
+    const matcher = new CodexMatcher(entries, { language: getNovel(db, req.params.id).language });
     const out: Record<string, string[]> = {};
     for (const act of loadActs(db, req.params.id))
       for (const ch of act.chapters) for (const s of ch.scenes) out[s.id] = [...matcher.mentionedIds(s.text)];

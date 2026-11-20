@@ -78,3 +78,70 @@ describe('Kodex-Auswahl', () => {
     expect(sel.items.find((i) => i.id === 'jorg')?.included).toBe(false);
   });
 });
+
+describe('Codex mentions by language of the novel', () => {
+  const es = new CodexMatcher(
+    [
+      codex({ id: 'angel', name: 'Ángel' }),
+      codex({ id: 'martin', name: 'Martin', aliases: ['el doctor Ruiz'] }),
+      codex({ id: 'ana', name: 'Ana' }),
+      codex({ id: 'pena', name: 'Peña', type: 'location' }),
+      codex({ id: 'anillo', name: 'anillo de la abuela', type: 'object' }),
+      codex({ id: 'faro', name: 'Faro', type: 'location', caseSensitive: true }),
+      codex({ id: 'ciudad', name: 'Ciudad Vieja', type: 'location' }),
+    ],
+    { language: 'Spanish' },
+  );
+  const ids = (text: string) => [...es.mentionedIds(text)].sort();
+
+  it('Spanish: accents on vowels do not matter, in either direction', () => {
+    expect(ids('Angel llegó tarde.')).toEqual(['angel']);
+    expect(ids('ÁNGEL no contestó.')).toEqual(['angel']);
+    expect(ids('Martín abrió la puerta.')).toEqual(['martin']);
+    expect(ids('Habló con el doctor Ruíz.')).toEqual(['martin']);
+  });
+
+  it('Spanish: the ñ is a different letter', () => {
+    expect(ids('Subieron a la Peña.')).toEqual(['pena']);
+    expect(ids('Subieron a la Pena.')).toEqual([]); // "pena" is another word
+  });
+
+  it('Spanish: plurals -s and -es, but not the German endings', () => {
+    expect(ids('los anillos de la abuela')).toEqual([]); // the plural goes at the end of the term, not in the middle
+    expect(ids('Las Anas del pueblo')).toEqual(['ana']);
+    expect(ids('dos Ciudades Viejas')).toEqual([]);
+    expect(ids('la Ciudad Viejas')).toEqual(['ciudad']);
+    expect(ids('Anan y Anen')).toEqual([]);
+  });
+
+  it('Spanish: word boundaries with accents and ñ', () => {
+    expect(ids('Anabel y Ángela')).toEqual([]);
+    expect(ids('Peñasco')).toEqual([]);
+    expect(ids('—¿Ana? —preguntó.')).toEqual(['ana']);
+  });
+
+  it('Spanish: case-sensitive entries keep their case, accents still fold', () => {
+    expect(ids('el faro de la costa')).toEqual([]);
+    expect(ids('El Faro estaba apagado.')).toEqual(['faro']);
+  });
+
+  it('mentions keep the text as written', () => {
+    expect(es.findMentions('Vio a Angel.').map((m) => m.text)).toEqual(['Angel']);
+  });
+
+  it('English: possessive and plural, no German endings', () => {
+    const en = new CodexMatcher([codex({ id: 'maria', name: 'Maria' })], { language: 'English (US)' });
+    expect([...en.mentionedIds("Maria's coat")]).toEqual(['maria']);
+    expect([...en.mentionedIds('two Marias')]).toEqual(['maria']);
+    expect(en.mentionedIds('Marian left').size).toBe(0);
+  });
+
+  it('German (and unknown languages) keep the original endings, accents count', () => {
+    for (const language of ['German', undefined, 'Klingon']) {
+      const de = new CodexMatcher([codex({ id: 'maria', name: 'Maria' }), codex({ id: 'joerg', name: 'Jörg' })], { language });
+      expect([...de.mentionedIds('Marias Jacke')]).toEqual(['maria']);
+      expect([...de.mentionedIds('Marian')]).toEqual(['maria']); // Maria + n (English and Spanish: no)
+      expect(de.mentionedIds('Jorg kam.').size).toBe(0);
+    }
+  });
+});
