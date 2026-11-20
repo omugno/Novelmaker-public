@@ -35,6 +35,8 @@ interface RewriteTarget {
   to: number;
   original: string;
   builtinKey: string;
+  /** Prefilled instruction (e.g. the fix proposed by the continuity check) */
+  instruction?: string;
 }
 
 export const useRewrite = create<{ target: RewriteTarget | null; open: (target: RewriteTarget) => void; close: () => void }>((set) => ({
@@ -62,7 +64,7 @@ function RewriteInner({ target, onClose }: { target: RewriteTarget; onClose: () 
   const [promptId, setPromptId] = useState<string | null>(byKey?.id ?? last.promptId);
   const [model, setModel] = useTouched<ModelRef | null>(last.model);
   const [inputs, setInputs] = useState<InputValues>({});
-  const [instruction, setInstruction] = useState('');
+  const [instruction, setInstruction] = useState(target.instruction ?? '');
   const prompt = useMemo(() => prompts?.find((p) => p.id === promptId) ?? null, [prompts, promptId]);
   const promptInputs = usePromptInputs(prompt);
   const modelLabel = useModelLabel();

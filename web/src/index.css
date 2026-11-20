@@ -167,6 +167,19 @@ body {
   @apply decoration-amber-600/70 dark:decoration-amber-400/70;
   cursor: help;
 }
+/* Continuity check: contradiction (red) or doubt (amber) */
+.continuity-mark {
+  text-decoration: underline wavy;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 4px;
+  text-decoration-skip-ink: none;
+  @apply decoration-red-600/80 dark:decoration-red-400/80;
+  cursor: pointer;
+}
+.continuity-mark.continuity-doubt {
+  @apply decoration-amber-500/80 dark:decoration-amber-400/80;
+}
+
 .hide-mentions .codex-mention {
   text-decoration: none;
   cursor: text;

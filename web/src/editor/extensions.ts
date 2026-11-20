@@ -4,7 +4,7 @@ import { Plugin, PluginKey, TextSelection, type EditorState, type Transaction } 
 import { findWrapping } from '@tiptap/pm/transform';
 import { Decoration, DecorationSet } from '@tiptap/pm/view';
 import type { Node as PMNode } from '@tiptap/pm/model';
-import { makeId, type CodexMatcher } from '@novelmaker/shared';
+import { findQuote, makeId, type CodexMatcher, type ContinuityIssue } from '@novelmaker/shared';
 import { BeatView } from './BeatView';
 import { FrameView } from './FrameView';
 import { NoteView } from './NoteView';
@@ -324,6 +324,77 @@ export function setCodexMatcher(editor: Editor, matcher: CodexMatcher | null) {
   if (!storage || editor.isDestroyed) return;
   storage.matcher = matcher;
   editor.view.dispatch(editor.state.tr.setMeta(codexKey, true).setMeta('addToHistory', false));
+}
+
+// ---------------------------------------------------------------- Continuity check: underline the quoted passages
+
+export const continuityKey = new PluginKey<DecorationSet>('continuityMarks');
+
+/** Where an issue's quote stands in the document (first text block that contains it), or null. */
+export function findIssueRange(doc: PMNode, quote: string): { from: number; to: number } | null {
+  let hit: { from: number; to: number } | null = null;
+  doc.descendants((node, pos) => {
+    if (hit) return false;
+    if (!node.isTextblock) return true;
+    const m = findQuote(node.textContent, quote);
+    if (m) hit = { from: pos + 1 + m.start, to: pos + 1 + m.end };
+    return false;
+  });
+  return hit;
+}
+
+function buildContinuityDecorations(doc: PMNode, issues: ContinuityIssue[]): DecorationSet {
+  if (!issues.length) return DecorationSet.empty;
+  const decos: Decoration[] = [];
+  issues.forEach((issue, i) => {
+    const r = findIssueRange(doc, issue.quote);
+    if (!r) return;
+    decos.push(
+      Decoration.inline(r.from, r.to, {
+        class: issue.severity === 'doubt' ? 'continuity-mark continuity-doubt' : 'continuity-mark',
+        'data-continuity': String(i),
+        title: issue.problem,
+      }),
+    );
+  });
+  return DecorationSet.create(doc, decos);
+}
+
+export interface ContinuityStorage {
+  issues: ContinuityIssue[];
+}
+
+/** Rebuilt on every change: a passage that was fixed no longer contains the quote, so its mark goes away. */
+export const ContinuityMarks = Extension.create<object, ContinuityStorage>({
+  name: 'continuityMarks',
+  addStorage() {
+    return { issues: [] };
+  },
+  addProseMirrorPlugins() {
+    const storage = this.storage;
+    return [
+      new Plugin<DecorationSet>({
+        key: continuityKey,
+        state: {
+          init: (_cfg, state) => buildContinuityDecorations(state.doc, storage.issues),
+          apply: (tr, old, _oldState, newState) => {
+            if (tr.docChanged || tr.getMeta(continuityKey)) return buildContinuityDecorations(newState.doc, storage.issues);
+            return old;
+          },
+        },
+        props: {
+          decorations: (state) => continuityKey.getState(state),
+        },
+      }),
+    ];
+  },
+});
+
+export function setContinuityIssues(editor: Editor, issues: ContinuityIssue[]) {
+  const storage = editor.storage.continuityMarks as ContinuityStorage | undefined;
+  if (!storage || editor.isDestroyed) return;
+  storage.issues = issues;
+  editor.view.dispatch(editor.state.tr.setMeta(continuityKey, true).setMeta('addToHistory', false));
 }
 
 // ---------------------------------------------------------------- Befehle mit „/“ am Zeilenanfang

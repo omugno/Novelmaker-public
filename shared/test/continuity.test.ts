@@ -73,12 +73,9 @@ describe('continuity: finding the quote', () => {
     expect(span('-¿Vienes? -preguntó Hannes')).toBe('—¿Vienes? —preguntó Hannes');
   });
 
-  it('a drifting quote: first and last words still match', () => {
-    expect(span('Marta se apartó el cabello de los ojos azules')).toBe('Marta se apartó el pelo de los ojos azules');
-  });
-
-  it('a long quote whose ending is not there keeps the beginning', () => {
-    expect(span('giró el anillo en su mano izquierda con nervios')).toBe('giró el anillo en');
+  it('a changed word means no match (the issue was fixed, or the quote was inexact)', () => {
+    expect(span('Marta se apartó el cabello de los ojos azules')).toBeNull();
+    expect(span('Se apartó el pelo de los ojos verdes')).toBeNull();
   });
 
   it('nothing found, or too short', () => {

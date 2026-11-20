@@ -169,8 +169,8 @@ export interface QuoteMatch {
 
 /**
  * Finds a quote in a text, ignoring case, quotation marks, dash variants and spacing.
- * If the whole quote is not there, it tries the first and last few words (models shorten or drift).
- * Returns character offsets in the original text, or null.
+ * Only an exact match counts: once the author changes anything inside the quoted words,
+ * the issue counts as handled and its mark disappears. Returns offsets in the original text, or null.
  */
 export function findQuote(text: string, quote: string): QuoteMatch | null {
   const q = trimQuote(quote);
@@ -178,19 +178,9 @@ export function findQuote(text: string, quote: string): QuoteMatch | null {
   const hay = normalize(text);
   const needle = normalize(q).text;
   if (!needle) return null;
-  const at = (ns: number, ne: number): QuoteMatch => ({ start: hay.map[ns], end: hay.map[ne - 1] + 1 });
   const idx = hay.text.indexOf(needle);
-  if (idx >= 0) return at(idx, idx + needle.length);
-  const words = needle.split(' ');
-  if (words.length < 6) return null;
-  const head = words.slice(0, 4).join(' ');
-  const tail = words.slice(-4).join(' ');
-  const h = hay.text.indexOf(head);
-  if (h < 0) return null;
-  const t = hay.text.indexOf(tail, h + head.length);
-  // the matched span may not be much longer than the quote itself
-  if (t >= 0 && t + tail.length - h <= needle.length * 1.5) return at(h, t + tail.length);
-  return at(h, h + head.length);
+  if (idx < 0) return null;
+  return { start: hay.map[idx], end: hay.map[idx + needle.length - 1] + 1 };
 }
 
 // ---------------------------------------------------------------- Prompt texts (sent to the AI)

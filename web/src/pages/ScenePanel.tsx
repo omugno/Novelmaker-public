@@ -23,9 +23,10 @@ import { POV_OPTIONS, PovSelect } from './LibraryPage';
 import { openCodexModal } from '../components/CodexModal';
 import { aiPinnedCodexIds } from '../lib/pins';
 import { deleteOutlineItem } from './OutlineTree';
+import { ContinuityPanel } from './ContinuityPanel';
 import { t, tn } from '../lib/i18n';
 
-type Tab = 'scene' | 'codex' | 'ai' | 'history';
+type Tab = 'scene' | 'codex' | 'ai' | 'continuity' | 'history';
 
 export function ScenePanel({ outline, scene, onRestored, onOpenScene }: { outline: Outline; scene: SceneMeta; onRestored: () => void; onOpenScene: (id: string) => void }) {
   const [tab, setTab] = useState<Tab>('scene');
@@ -39,6 +40,7 @@ export function ScenePanel({ outline, scene, onRestored, onOpenScene }: { outlin
           { value: 'scene', label: t('Scene') },
           { value: 'codex', label: t('Codex') },
           { value: 'ai', label: t('AI') },
+          { value: 'continuity', label: t('Continuity') },
           { value: 'history', label: t('Versions') },
         ]}
       />
@@ -46,6 +48,7 @@ export function ScenePanel({ outline, scene, onRestored, onOpenScene }: { outlin
         {tab === 'scene' && <SceneInfo key={scene.id} outline={outline} scene={scene} onOpenScene={onOpenScene} />}
         {tab === 'codex' && <SceneCodex novelId={outline.novel.id} sceneId={scene.id} />}
         {tab === 'ai' && <AiContext novelId={outline.novel.id} sceneId={scene.id} />}
+        {tab === 'continuity' && <ContinuityPanel novelId={outline.novel.id} sceneId={scene.id} />}
         {tab === 'history' && <Snapshots sceneId={scene.id} onRestored={onRestored} />}
       </div>
     </div>

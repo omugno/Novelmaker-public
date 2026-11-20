@@ -8,7 +8,23 @@ import { CodexMatcher, codexTypeLabel, effectiveCodex, countWords, docToPlainTex
 import { useCodex, useNovel } from '../lib/queries';
 import { toast, useUi } from '../lib/store';
 import { Badge, cn, IconButton } from '../components/ui';
-import { Beat, CodexHighlight, FocusBlock, Frame, frameStamp, HiddenNote, runSlashCommand, setCodexMatcher, setSlashIndex, SlashCommands, slashKey, type SlashCommandId } from './extensions';
+import {
+  Beat,
+  CodexHighlight,
+  ContinuityMarks,
+  FocusBlock,
+  Frame,
+  frameStamp,
+  HiddenNote,
+  runSlashCommand,
+  setCodexMatcher,
+  setContinuityIssues,
+  setSlashIndex,
+  SlashCommands,
+  slashKey,
+  type SlashCommandId,
+} from './extensions';
+import { useSceneIssues } from '../lib/continuity';
 import { registerSaver, SceneSaver, SceneScopeContext, useActiveEditor } from './scope';
 import { useContinue, useRewrite } from './RewritePanel';
 import { openCodexModal } from '../components/CodexModal';
@@ -53,6 +69,7 @@ export function SceneEditor({ novelId, sceneId, content, autoFocus, onWords, pla
         HiddenNote,
         Frame,
         CodexHighlight,
+        ContinuityMarks,
         FocusBlock,
         SlashCommands.configure({
           onContinue: (ed) => useContinue.getState().open({ editor: ed, sceneId, novelId, pos: ed.state.selection.to }),
@@ -77,6 +94,12 @@ export function SceneEditor({ novelId, sceneId, content, autoFocus, onWords, pla
   useEffect(() => {
     if (editor && !editor.isDestroyed) setCodexMatcher(editor, matcher);
   }, [editor, matcher]);
+
+  // Continuity check: underline the passages of this scene's issues
+  const continuityIssues = useSceneIssues(sceneId);
+  useEffect(() => {
+    if (editor && !editor.isDestroyed) setContinuityIssues(editor, continuityIssues);
+  }, [editor, continuityIssues]);
 
   // Sprache des Romans kann nach dem Anlegen des Editors geladen werden oder sich ändern
   useEffect(() => {
