@@ -38,6 +38,7 @@ export type BlockKind =
   | 'novelInfo'
   | 'codex'
   | 'storySoFar'
+  | 'related'
   | 'sceneSummary'
   | 'sourceText'
   | 'context'
@@ -140,6 +141,14 @@ export const BLOCK_DEFS: BlockDef[] = [
     group: 'context',
     types: ALL,
     defaults: (t) => on(t === BEAT || t === CONT || t === CHK),
+  },
+  {
+    kind: 'related',
+    label: N_('Related passages'),
+    hint: N_('Passages from other scenes that resemble the text, found by meaning (semantic search). Needs an embedding model in Settings → Semantic search.'),
+    group: 'context',
+    types: [BEAT, CONT, EDIT, CHAT, CHK],
+    defaults: (t) => on(t === CHK),
   },
   {
     kind: 'sceneSummary',
@@ -419,6 +428,7 @@ export function compileBlockPrompt(spec: BlockPromptSpec, type: PromptType, lang
   }
   if (b('codex')) context.push(`{#if codex.context}\n${F.codex}\n${tag(F.tagCodex, '{codex.context}')}\n{#endif}`);
   if (b('storySoFar')) context.push(`{#if storySoFar}\n${F.storySoFar}\n${tag(F.tagStory, '{storySoFar}')}\n{#endif}`);
+  if (b('related')) context.push(`{#if relatedPassages}\n${F.related}\n${tag(F.tagRelated, '{relatedPassages}')}\n{#endif}`);
   if (b('sceneSummary')) context.push(`{#if scene.summary}\n${F.scenePlan}\n${tag(F.tagPlan, '{scene.summary}')}\n{#endif}`);
   if (b('sourceText'))
     context.push(

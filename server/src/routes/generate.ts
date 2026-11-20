@@ -5,7 +5,8 @@ import { HttpError } from '../db';
 import { listMessages } from '../repo/chat';
 import { getProvider } from '../repo/llm';
 import { buildParams, estimateGeneration, runGeneration, SseWriter } from '../services/generate';
-import { prepareRender } from '../services/promptdata';
+import { prepareRender, type Prepared } from '../services/promptdata';
+import { relatedForRequest } from '../services/semantic';
 
 type Req = GenerateRequest & { chapterId?: string | null; context?: RefValue[] };
 
@@ -20,10 +21,24 @@ function withChatHistory(ctx: AppContext, req: Req): Req {
 export function registerGenerateRoutes(app: FastifyInstance, ctx: AppContext) {
   const { db } = ctx;
 
+  /**
+   * Renders the prompt; if it asks for related passages (semantic search), looks them up first and
+   * renders again with them. A note (search off, model unreachable) becomes an info warning.
+   */
+  const prepareWithRelated = async (body: Req, signal?: AbortSignal): Promise<Prepared> => {
+    const first = prepareRender(db, body);
+    const rel = await relatedForRequest(db, body, first.prompt.messages, signal);
+    if (!rel.text && !rel.note) return first;
+    const prep = rel.text ? prepareRender(db, { ...body, related: rel.text } as Req) : first;
+    if (rel.note) prep.result.warnings.push({ level: 'info', message: rel.note });
+    else prep.result.warnings.push({ level: 'info', message: t('Related passages: {n} from other scenes.', { n: rel.count }) });
+    return prep;
+  };
+
   /** Fertig gerenderte Nachrichten, Warnungen, Token-Zahl und Kodex-Auswahl – ohne KI-Aufruf. */
   app.post<{ Body: Req }>('/api/preview', async (req): Promise<PreviewResult & { params?: Record<string, unknown> }> => {
     const body = withChatHistory(ctx, req.body);
-    const prep = prepareRender(db, body);
+    const prep = await prepareWithRelated(body);
     const params = body.model ? buildParams(db, body.model, prep, body.params) : undefined;
     return {
       messages: prep.result.messages,
@@ -48,12 +63,20 @@ export function registerGenerateRoutes(app: FastifyInstance, ctx: AppContext) {
     const body = withChatHistory(ctx, req.body);
     if (!body.model?.providerId || !body.model.modelId) throw new HttpError(400, t('No model selected.'));
     const provider = getProvider(db, body.model.providerId);
-    const prep = prepareRender(db, body);
-    if (!prep.result.messages.length) throw new HttpError(400, t('The prompt doesn’t produce any messages.'));
-    const params = buildParams(db, body.model, prep, body.params);
-
+    // the semantic search can take a few seconds (first indexing): open the stream first
     reply.hijack();
     const sse = new SseWriter(reply.raw);
+    let prep: Prepared;
+    try {
+      prep = await prepareWithRelated(body, sse.abort.signal);
+      if (!prep.result.messages.length) throw new HttpError(400, t('The prompt doesn’t produce any messages.'));
+    } catch (e) {
+      sse.send('error', { message: (e as Error).message });
+      sse.end();
+      return;
+    }
+    const params = buildParams(db, body.model, prep, body.params);
+
     sse.send('meta', { warnings: prep.result.warnings, promptTokens: estimateMessagesTokens(prep.result.messages), params });
     const result = await runGeneration({
       db,

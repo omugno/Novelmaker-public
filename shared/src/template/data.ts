@@ -62,6 +62,8 @@ export interface PromptData {
   inputs: InputValues;
   pinnedCodexIds: string[];
   chat?: { history: ChatMessageData[]; message: string };
+  /** Related passages from other scenes, found by semantic search before rendering (formatRelated) */
+  related?: string;
 }
 
 export interface RenderablePrompt {

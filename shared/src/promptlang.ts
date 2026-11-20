@@ -59,6 +59,9 @@ export interface Framing {
   tagExtra: string;
   prevScene: string;
   tagPrev: string;
+  /** Related passages from other scenes (semantic search) */
+  related: string;
+  tagRelated: string;
   beforeEdit: string;
   beforeWrite: string;
   tagBefore: string;
@@ -97,6 +100,8 @@ export const FRAMING: L<Framing> = {
     tagExtra: 'zusatzkontext',
     prevScene: 'So endet die vorige Szene:',
     tagPrev: 'vorigeSzene',
+    related: 'Ähnliche Stellen aus anderen Szenen (nach Bedeutung gesucht):',
+    tagRelated: 'verwandteStellen',
     beforeEdit: 'Text vor der Textstelle (nur zum Verständnis, nicht zurückgeben)',
     beforeWrite: 'Der bisherige Text der Szene (nicht wiederholen)',
     tagBefore: 'textDavor',
@@ -130,6 +135,8 @@ export const FRAMING: L<Framing> = {
     tagExtra: 'additionalContext',
     prevScene: 'This is how the previous scene ends:',
     tagPrev: 'previousScene',
+    related: 'Related passages from other scenes (found by meaning):',
+    tagRelated: 'relatedPassages',
     beforeEdit: 'Text before the passage (for context only, do not return it)',
     beforeWrite: 'The scene so far (do not repeat it)',
     tagBefore: 'textBefore',
@@ -163,6 +170,8 @@ export const FRAMING: L<Framing> = {
     tagExtra: 'additionalContext',
     prevScene: 'Así termina la escena anterior:',
     tagPrev: 'previousScene',
+    related: 'Pasajes relacionados de otras escenas (buscados por significado):',
+    tagRelated: 'relatedPassages',
     beforeEdit: 'Texto antes del fragmento (solo como contexto, no lo devuelvas)',
     beforeWrite: 'El texto de la escena hasta ahora (no lo repitas)',
     tagBefore: 'textBefore',
@@ -196,6 +205,8 @@ export const FRAMING: L<Framing> = {
     tagExtra: 'additionalContext',
     prevScene: 'Так закінчується попередня сцена:',
     tagPrev: 'previousScene',
+    related: "Пов'язані уривки з інших сцен (знайдені за змістом):",
+    tagRelated: 'relatedPassages',
     beforeEdit: 'Текст перед фрагментом (лише для розуміння, не повертай його)',
     beforeWrite: 'Наявний текст сцени (не повторюй його)',
     tagBefore: 'textBefore',
@@ -229,6 +240,8 @@ export const FRAMING: L<Framing> = {
     tagExtra: 'additionalContext',
     prevScene: 'Ecco come finisce la scena precedente:',
     tagPrev: 'previousScene',
+    related: 'Passaggi correlati di altre scene (trovati per significato):',
+    tagRelated: 'relatedPassages',
     beforeEdit: 'Testo prima del passaggio (solo per contesto, non restituirlo)',
     beforeWrite: 'Il testo della scena finora (non ripeterlo)',
     tagBefore: 'textBefore',
@@ -262,6 +275,8 @@ export const FRAMING: L<Framing> = {
     tagExtra: 'additionalContext',
     prevScene: 'Voici comment se termine la scène précédente :',
     tagPrev: 'previousScene',
+    related: 'Passages liés d’autres scènes (trouvés par le sens) :',
+    tagRelated: 'relatedPassages',
     beforeEdit: 'Texte précédant le passage (uniquement pour le contexte, ne le renvoie pas)',
     beforeWrite: 'Le texte de la scène jusqu’ici (ne le répète pas)',
     tagBefore: 'textBefore',

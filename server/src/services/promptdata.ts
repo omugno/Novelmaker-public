@@ -76,6 +76,8 @@ export interface BuildDataInput {
   inputs?: InputValues;
   pinnedCodexIds?: string[];
   chat?: { history: ChatMessageData[]; message: string };
+  /** Related passages (semantic search), already formatted */
+  related?: string;
 }
 
 export function buildPromptData(db: DB, inp: BuildDataInput, components?: PromptComponentData[]): PromptData {
@@ -108,6 +110,7 @@ export function buildPromptData(db: DB, inp: BuildDataInput, components?: Prompt
     inputs,
     pinnedCodexIds: (inp.pinnedCodexIds ?? []).map((id) => r(id)!),
     chat: inp.chat,
+    related: inp.related ?? '',
   };
 }
 
@@ -154,7 +157,7 @@ export interface Prepared {
   inputs: InputValues;
 }
 
-export function prepareRender(db: DB, req: GenerateRequest & { chapterId?: string | null; context?: RefValue[] }): Prepared {
+export function prepareRender(db: DB, req: GenerateRequest & { chapterId?: string | null; context?: RefValue[]; related?: string }): Prepared {
   const prompt = resolvePrompt(db, req);
   const components = listComponents(db, prompt.lang);
   let inputs = req.inputs ?? {};
@@ -175,6 +178,7 @@ export function prepareRender(db: DB, req: GenerateRequest & { chapterId?: strin
       inputs,
       pinnedCodexIds: req.pinnedCodexIds,
       chat: req.chatHistory || req.kind === 'chat' ? { history: req.chatHistory ?? [], message: req.message ?? '' } : undefined,
+      related: req.related,
     },
     components,
   );

@@ -16,6 +16,7 @@ import { registerChatRoutes } from './routes/chat';
 import { registerMiscRoutes } from './routes/misc';
 import { registerSystemRoutes } from './routes/system';
 import { registerI18nRoutes } from './routes/i18n';
+import { registerSemanticRoutes } from './routes/semantic';
 
 export interface AppContext {
   db: DB;
@@ -58,6 +59,7 @@ export async function buildApp(db: DB, opts: { logger?: boolean; serveWeb?: bool
   registerMiscRoutes(app, ctx);
   registerSystemRoutes(app, ctx);
   registerI18nRoutes(app);
+  registerSemanticRoutes(app, ctx);
 
   const dist = join(ROOT_DIR, 'web', 'dist');
   if (opts.serveWeb !== false && existsSync(join(dist, 'index.html'))) {

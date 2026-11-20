@@ -251,6 +251,13 @@ export const FUNCTIONS: FnDef[] = [
   },
   {
     group: N_('Scene'),
+    name: 'relatedPassages',
+    sig: 'relatedPassages',
+    doc: N_('Passages from other scenes that resemble the text (semantic search; needs an embedding model in Settings)'),
+    impl: (env) => env.data.related ?? '',
+  },
+  {
+    group: N_('Scene'),
     name: 'storySoFar',
     sig: 'storySoFar',
     doc: N_('All scene summaries up to (not including) the current scene'),

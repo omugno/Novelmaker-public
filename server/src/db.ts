@@ -197,6 +197,18 @@ CREATE TABLE IF NOT EXISTS settings (
   key TEXT PRIMARY KEY,
   value TEXT NOT NULL
 );
+-- Semantic search: passages of each scene with their embedding (Float32 little-endian)
+CREATE TABLE IF NOT EXISTS scene_chunks (
+  id TEXT PRIMARY KEY,
+  novel_id TEXT NOT NULL REFERENCES novels(id) ON DELETE CASCADE,
+  scene_id TEXT NOT NULL REFERENCES scenes(id) ON DELETE CASCADE,
+  idx INTEGER NOT NULL,
+  hash TEXT NOT NULL,
+  text TEXT NOT NULL,
+  model TEXT NOT NULL,
+  vector BLOB NOT NULL
+);
+CREATE INDEX IF NOT EXISTS scene_chunks_novel ON scene_chunks(novel_id, model);
 CREATE TABLE IF NOT EXISTS novel_covers (
   novel_id TEXT PRIMARY KEY REFERENCES novels(id) ON DELETE CASCADE,
   mime TEXT NOT NULL,

@@ -78,6 +78,27 @@ export async function fetchModels(p: Provider): Promise<ProviderModel[]> {
     .sort((a: ProviderModel, b: ProviderModel) => a.id.localeCompare(b.id));
 }
 
+/** Vectors for several texts from an OpenAI-compatible /embeddings endpoint, in input order. */
+export async function fetchEmbeddings(p: Provider, model: string, input: string[], signal?: AbortSignal): Promise<number[][]> {
+  let res: Response;
+  try {
+    res = await fetch(`${p.baseUrl}/embeddings`, {
+      method: 'POST',
+      headers: headers(p),
+      body: JSON.stringify({ model, input }),
+      signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(120000)]) : AbortSignal.timeout(120000),
+    });
+  } catch (e) {
+    throw networkError(p, e as Error);
+  }
+  if (!res.ok) throw new LlmError(`${p.name}: ${res.status} ${await errorText(res)}`, res.status);
+  const j = (await res.json()) as { data?: { index?: number; embedding?: number[] }[] };
+  const data = [...(j.data ?? [])].sort((a, b) => (a.index ?? 0) - (b.index ?? 0));
+  if (data.length !== input.length || data.some((d) => !Array.isArray(d.embedding)))
+    throw new LlmError(t('{name}: the answer has {got} vectors for {want} texts', { name: p.name, got: data.length, want: input.length }));
+  return data.map((d) => d.embedding!);
+}
+
 export type StreamEvent =
   | { type: 'delta'; text: string }
   | { type: 'reasoning'; text: string }

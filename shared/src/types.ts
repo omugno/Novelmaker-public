@@ -478,6 +478,8 @@ export interface AppSettings {
   exportSceneHeadings: boolean;
   /** zuletzt genutzte Auswahl pro Werkzeug */
   lastSelections: Record<string, { promptId?: string; model?: ModelRef; inputs?: InputValues }>;
+  /** Embedding model for semantic search (OpenAI-compatible /embeddings); null = off */
+  embeddingModel: ModelRef | null;
 }
 
 export const DEFAULT_APP_SETTINGS: AppSettings = {
@@ -492,6 +494,7 @@ export const DEFAULT_APP_SETTINGS: AppSettings = {
   editorWidth: 720,
   exportSceneHeadings: true,
   lastSelections: {},
+  embeddingModel: null,
 };
 
 /** Anfrage für eine Generierung bzw. Vorschau. */
