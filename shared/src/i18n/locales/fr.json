@@ -1308,5 +1308,27 @@
   "Fix…": "Corriger…",
   "No longer in the text (changed, or the quote was inexact).": "N’est plus dans le texte (modifié, ou la citation était inexacte).",
   "Dismiss": "Ignorer",
-  "Continuity": "Cohérence"
+  "Continuity": "Cohérence",
+  "Related passages": "Passages liés",
+  "Passages from other scenes that resemble the text, found by meaning (semantic search). Needs an embedding model in Settings → General → Semantic search.": "Passages d’autres scènes qui ressemblent au texte, trouvés par le sens (recherche sémantique). Nécessite un modèle d’embeddings dans Réglages → Général → Recherche sémantique.",
+  "Passages from other scenes that resemble the text (semantic search; needs an embedding model in Settings)": "Passages d’autres scènes qui ressemblent au texte (recherche sémantique ; nécessite un modèle d’embeddings dans les réglages)",
+  "{name}: the answer has {got} vectors for {want} texts": "{name} : la réponse contient {got} vecteurs pour {want} textes",
+  "Related passages: {n} from other scenes.": "Passages liés : {n} d’autres scènes.",
+  "Please enter a search text.": "Saisis un texte à rechercher.",
+  "Semantic search is off: choose an embedding model in Settings.": "La recherche sémantique est désactivée : choisis un modèle d’embeddings dans les réglages.",
+  "Related passages: semantic search is off (Settings → General → Semantic search).": "Passages liés : la recherche sémantique est désactivée (Réglages → Général → Recherche sémantique).",
+  "Related passages left out: {error}": "Passages liés omis : {error}",
+  "Exact text": "Texte exact",
+  "By meaning": "Par le sens",
+  "Semantic search is off": "La recherche sémantique est désactivée",
+  "Choose an embedding model in Settings → General.": "Choisis un modèle d’embeddings dans Réglages → Général.",
+  "Describe what you are looking for, e.g. “the ring she lost”…": "Décris ce que tu cherches, p. ex. « la bague qu’elle a perdue »…",
+  "Finds passages that mean something similar, even with other words. The first search indexes the novel (can take a minute); later only changed passages.": "Trouve des passages au sens proche, même avec d’autres mots. La première recherche indexe le roman (peut prendre une minute) ; ensuite, seuls les passages modifiés.",
+  "{n} passages indexed.": {
+    "one": "{n} passage indexé.",
+    "other": "{n} passages indexés."
+  },
+  "Semantic search": "Recherche sémantique",
+  "Embedding model (OpenAI-compatible /embeddings, e.g. bge-m3). It finds passages by meaning: for “Search → By meaning” and the “Related passages” block of the continuity check. Off when empty.": "Modèle d’embeddings (/embeddings compatible OpenAI, p. ex. bge-m3). Trouve des passages par le sens : pour « Recherche → Par le sens » et le bloc « Passages liés » de la vérification de cohérence. Vide = désactivée.",
+  "Turn off": "Désactiver"
 }

@@ -6,7 +6,7 @@ import { api, copyText, download } from '../lib/api';
 import { keys, patchSettings, queryClient, useCollections, useLogs, useProviders, useSettings, useSystem, type ProviderInfo, type SystemInfo } from '../lib/queries';
 import { toast, useUi } from '../lib/store';
 import { Badge, Button, Checkbox, cn, confirmDialog, Empty, Field, formatDate, Input, Modal, Select, Spinner, Tabs, Textarea } from '../components/ui';
-import { WarningsList } from '../components/ai';
+import { ModelPicker, WarningsList } from '../components/ai';
 import { backupNow } from '../components/DataMenu';
 import { languageName, LANGUAGES, t, tn, tr, useLang, type Lang } from '../lib/i18n';
 import { TranslatePage } from './TranslatePage';
@@ -477,6 +477,21 @@ function General() {
             <Input type="number" step={100} min={0} value={settings.maxTokensBuffer} onChange={(e) => set({ maxTokensBuffer: Number(e.target.value) || 0 })} />
           </Field>
         </div>
+      </div>
+      <div className="rounded-lg border border-stone-200 p-4 dark:border-stone-800">
+        <Field
+          label={t('Semantic search')}
+          hint={t('Embedding model (OpenAI-compatible /embeddings, e.g. bge-m3). It finds passages by meaning: for “Search → By meaning” and the “Related passages” block of the continuity check. Off when empty.')}
+        >
+          <div className="flex items-center gap-2">
+            <ModelPicker value={settings.embeddingModel} onChange={(m) => set({ embeddingModel: m })} />
+            {settings.embeddingModel && (
+              <Button size="xs" variant="ghost" icon={<X className="size-3" />} onClick={() => set({ embeddingModel: null })}>
+                {t('Turn off')}
+              </Button>
+            )}
+          </div>
+        </Field>
       </div>
     </div>
   );

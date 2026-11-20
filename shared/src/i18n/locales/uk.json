@@ -1396,5 +1396,29 @@
   "Fix…": "Виправити…",
   "No longer in the text (changed, or the quote was inexact).": "Уже немає в тексті (змінено, або цитата була неточною).",
   "Dismiss": "Відхилити",
-  "Continuity": "Узгодженість"
+  "Continuity": "Узгодженість",
+  "Related passages": "Пов'язані уривки",
+  "Passages from other scenes that resemble the text, found by meaning (semantic search). Needs an embedding model in Settings → General → Semantic search.": "Уривки з інших сцен, схожі на текст, знайдені за змістом (семантичний пошук). Потрібна модель ембедингів у Налаштування → Загальні → Семантичний пошук.",
+  "Passages from other scenes that resemble the text (semantic search; needs an embedding model in Settings)": "Уривки з інших сцен, схожі на текст (семантичний пошук; потрібна модель ембедингів у налаштуваннях)",
+  "{name}: the answer has {got} vectors for {want} texts": "{name}: відповідь містить {got} векторів для {want} текстів",
+  "Related passages: {n} from other scenes.": "Пов'язані уривки: {n} з інших сцен.",
+  "Please enter a search text.": "Введіть текст для пошуку.",
+  "Semantic search is off: choose an embedding model in Settings.": "Семантичний пошук вимкнено: виберіть модель ембедингів у налаштуваннях.",
+  "Related passages: semantic search is off (Settings → General → Semantic search).": "Пов'язані уривки: семантичний пошук вимкнено (Налаштування → Загальні → Семантичний пошук).",
+  "Related passages left out: {error}": "Пов'язані уривки пропущено: {error}",
+  "Exact text": "Точний текст",
+  "By meaning": "За змістом",
+  "Semantic search is off": "Семантичний пошук вимкнено",
+  "Choose an embedding model in Settings → General.": "Виберіть модель ембедингів у Налаштування → Загальні.",
+  "Describe what you are looking for, e.g. “the ring she lost”…": "Опишіть, що шукаєте, напр. «каблучка, яку вона загубила»…",
+  "Finds passages that mean something similar, even with other words. The first search indexes the novel (can take a minute); later only changed passages.": "Знаходить уривки зі схожим змістом, навіть іншими словами. Перший пошук індексує роман (може тривати хвилину); далі – лише змінені уривки.",
+  "{n} passages indexed.": {
+    "one": "{n} уривок проіндексовано.",
+    "few": "{n} уривки проіндексовано.",
+    "many": "{n} уривків проіндексовано.",
+    "other": "{n} уривка проіндексовано."
+  },
+  "Semantic search": "Семантичний пошук",
+  "Embedding model (OpenAI-compatible /embeddings, e.g. bge-m3). It finds passages by meaning: for “Search → By meaning” and the “Related passages” block of the continuity check. Off when empty.": "Модель ембедингів (/embeddings, сумісний з OpenAI, напр. bge-m3). Знаходить уривки за змістом: для «Пошук → За змістом» і блоку «Пов'язані уривки» перевірки узгодженості. Порожньо = вимкнено.",
+  "Turn off": "Вимкнути"
 }

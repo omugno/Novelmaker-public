@@ -1308,5 +1308,27 @@
   "Fix…": "Corregir…",
   "No longer in the text (changed, or the quote was inexact).": "Ya no está en el texto (se cambió o la cita no era exacta).",
   "Dismiss": "Descartar",
-  "Continuity": "Coherencia"
+  "Continuity": "Coherencia",
+  "Related passages": "Pasajes relacionados",
+  "Passages from other scenes that resemble the text, found by meaning (semantic search). Needs an embedding model in Settings → General → Semantic search.": "Pasajes de otras escenas que se parecen al texto, buscados por significado (búsqueda semántica). Necesita un modelo de embeddings en Ajustes → General → Búsqueda semántica.",
+  "Passages from other scenes that resemble the text (semantic search; needs an embedding model in Settings)": "Pasajes de otras escenas que se parecen al texto (búsqueda semántica; necesita un modelo de embeddings en Ajustes)",
+  "{name}: the answer has {got} vectors for {want} texts": "{name}: la respuesta trae {got} vectores para {want} textos",
+  "Related passages: {n} from other scenes.": "Pasajes relacionados: {n} de otras escenas.",
+  "Please enter a search text.": "Escribe un texto de búsqueda.",
+  "Semantic search is off: choose an embedding model in Settings.": "La búsqueda semántica está desactivada: elige un modelo de embeddings en Ajustes.",
+  "Related passages: semantic search is off (Settings → General → Semantic search).": "Pasajes relacionados: la búsqueda semántica está desactivada (Ajustes → General → Búsqueda semántica).",
+  "Related passages left out: {error}": "Pasajes relacionados omitidos: {error}",
+  "Exact text": "Texto exacto",
+  "By meaning": "Por significado",
+  "Semantic search is off": "La búsqueda semántica está desactivada",
+  "Choose an embedding model in Settings → General.": "Elige un modelo de embeddings en Ajustes → General.",
+  "Describe what you are looking for, e.g. “the ring she lost”…": "Describe lo que buscas, p. ej. «el anillo que perdió»…",
+  "Finds passages that mean something similar, even with other words. The first search indexes the novel (can take a minute); later only changed passages.": "Encuentra pasajes que significan algo parecido, aunque usen otras palabras. La primera búsqueda indexa la novela (puede tardar un minuto); después, solo los pasajes que cambiaron.",
+  "{n} passages indexed.": {
+    "one": "{n} pasaje indexado.",
+    "other": "{n} pasajes indexados."
+  },
+  "Semantic search": "Búsqueda semántica",
+  "Embedding model (OpenAI-compatible /embeddings, e.g. bge-m3). It finds passages by meaning: for “Search → By meaning” and the “Related passages” block of the continuity check. Off when empty.": "Modelo de embeddings (/embeddings compatible con OpenAI, p. ej. bge-m3). Encuentra pasajes por significado: para «Búsqueda → Por significado» y el bloque «Pasajes relacionados» de la revisión de coherencia. Vacío = desactivada.",
+  "Turn off": "Desactivar"
 }

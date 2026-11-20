@@ -1302,5 +1302,27 @@
   "Fix…": "Korrigieren …",
   "No longer in the text (changed, or the quote was inexact).": "Nicht mehr im Text (geändert, oder das Zitat war ungenau).",
   "Dismiss": "Verwerfen",
-  "Continuity": "Kontinuität"
+  "Continuity": "Kontinuität",
+  "Related passages": "Verwandte Stellen",
+  "Passages from other scenes that resemble the text, found by meaning (semantic search). Needs an embedding model in Settings → General → Semantic search.": "Stellen aus anderen Szenen, die dem Text ähneln, nach Bedeutung gesucht (semantische Suche). Braucht ein Embedding-Modell unter Einstellungen → Allgemein → Semantische Suche.",
+  "Passages from other scenes that resemble the text (semantic search; needs an embedding model in Settings)": "Stellen aus anderen Szenen, die dem Text ähneln (semantische Suche; braucht ein Embedding-Modell in den Einstellungen)",
+  "{name}: the answer has {got} vectors for {want} texts": "{name}: Die Antwort enthält {got} Vektoren für {want} Texte",
+  "Related passages: {n} from other scenes.": "Verwandte Stellen: {n} aus anderen Szenen.",
+  "Please enter a search text.": "Bitte gib einen Suchtext ein.",
+  "Semantic search is off: choose an embedding model in Settings.": "Die semantische Suche ist aus: Wähle ein Embedding-Modell in den Einstellungen.",
+  "Related passages: semantic search is off (Settings → General → Semantic search).": "Verwandte Stellen: Die semantische Suche ist aus (Einstellungen → Allgemein → Semantische Suche).",
+  "Related passages left out: {error}": "Verwandte Stellen ausgelassen: {error}",
+  "Exact text": "Genauer Text",
+  "By meaning": "Nach Bedeutung",
+  "Semantic search is off": "Die semantische Suche ist aus",
+  "Choose an embedding model in Settings → General.": "Wähle ein Embedding-Modell unter Einstellungen → Allgemein.",
+  "Describe what you are looking for, e.g. “the ring she lost”…": "Beschreibe, was du suchst, z. B. „der Ring, den sie verloren hat“ …",
+  "Finds passages that mean something similar, even with other words. The first search indexes the novel (can take a minute); later only changed passages.": "Findet Stellen mit ähnlicher Bedeutung, auch mit anderen Worten. Die erste Suche indiziert den Roman (kann eine Minute dauern); danach nur geänderte Stellen.",
+  "{n} passages indexed.": {
+    "one": "{n} Stelle indiziert.",
+    "other": "{n} Stellen indiziert."
+  },
+  "Semantic search": "Semantische Suche",
+  "Embedding model (OpenAI-compatible /embeddings, e.g. bge-m3). It finds passages by meaning: for “Search → By meaning” and the “Related passages” block of the continuity check. Off when empty.": "Embedding-Modell (OpenAI-kompatibles /embeddings, z. B. bge-m3). Findet Stellen nach Bedeutung: für „Suche → Nach Bedeutung“ und den Baustein „Verwandte Stellen“ der Kontinuitätsprüfung. Leer = aus.",
+  "Turn off": "Ausschalten"
 }

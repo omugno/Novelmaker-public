@@ -175,7 +175,7 @@ export async function relatedForRequest(
   signal?: AbortSignal,
 ): Promise<{ text: string; count: number; note: string | null }> {
   if (!usesRelated(messages)) return { text: '', count: 0, note: null };
-  if (!embeddingModel(db)) return { text: '', count: 0, note: t('Related passages: semantic search is off (Settings → Semantic search).') };
+  if (!embeddingModel(db)) return { text: '', count: 0, note: t('Related passages: semantic search is off (Settings → General → Semantic search).') };
   const query = (req.selection?.trim() || req.message?.trim() || (req.textBefore ?? '').split(/\s+/).slice(-300).join(' ')).trim();
   if (!query) return { text: '', count: 0, note: null };
   try {

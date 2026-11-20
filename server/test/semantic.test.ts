@@ -122,3 +122,27 @@ describe('semantic search', () => {
     expect(await api('GET', `/api/novels/${novelId}/semantic`)).toMatchObject({ passages: 1, scenes: 1 });
   });
 });
+
+describe('upgrade of the continuity prompt saved before the related block existed', () => {
+  const stored = (d: DB, lang: string) =>
+    JSON.parse((d.prepare("SELECT t.blocks FROM prompt_texts t JOIN prompts p ON p.id = t.prompt_id WHERE p.builtin_key = 'continuity-check' AND t.lang = ?").get(lang) as any).blocks);
+  const strip = (d: DB, lang: string, role?: string) => {
+    const spec = stored(d, lang);
+    delete spec.blocks.related;
+    if (role) spec.role = role;
+    d.prepare("UPDATE prompt_texts SET blocks = ? WHERE lang = ? AND prompt_id = (SELECT id FROM prompts WHERE builtin_key = 'continuity-check')").run(JSON.stringify(spec), lang);
+  };
+
+  it('unedited versions get the block; edited ones are left alone', () => {
+    const d = openDb(':memory:');
+    seedBuiltins(d);
+    strip(d, 'es');
+    strip(d, 'en', 'My own role text');
+    seedBuiltins(d);
+    expect(stored(d, 'es').blocks.related).toEqual({ on: true });
+    expect(stored(d, 'en').blocks.related).toBeUndefined();
+    const msgs = (d.prepare("SELECT t.messages FROM prompt_texts t JOIN prompts p ON p.id = t.prompt_id WHERE p.builtin_key = 'continuity-check' AND t.lang = 'es'").get() as any).messages;
+    expect(msgs).toContain('relatedPassages');
+    d.close();
+  });
+});

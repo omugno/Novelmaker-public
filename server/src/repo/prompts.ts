@@ -386,10 +386,30 @@ function upgradeLegacyBuiltins(db: DB) {
  * Mitgelieferte Prompts anlegen, falls sie fehlen (vom Nutzer gelöschte nicht wieder), und fehlende
  * Sprachfassungen ergänzen (vom Nutzer gelöschte Fassungen ebenfalls nicht).
  */
+/**
+ * The continuity check got the "related passages" block after its first release. Language versions
+ * the author has not edited (same role and task as shipped) get the current blocks; edited ones are
+ * left alone (the block can be switched on in the prompt workshop).
+ */
+function upgradeContinuityBuiltin(db: DB) {
+  const r = db.prepare("SELECT id FROM prompts WHERE builtin_key = 'continuity-check'").get() as Row | undefined;
+  if (!r) return;
+  for (const [lang, row] of loadTexts(db, r.id).get(r.id) ?? []) {
+    const spec = parseJson<BlockPromptSpec | null>(row.blocks, null);
+    const b = builtinPrompt('continuity-check', lang as Lang);
+    if (!spec || !b?.blocks || spec.blocks.related) continue;
+    if (spec.role !== b.blocks.role || spec.task !== b.blocks.task) continue;
+    const blocks: BlockPromptSpec = { ...spec, blocks: { ...spec.blocks, related: b.blocks.blocks.related } };
+    const c = compileBlockPrompt(blocks, 'continuity-check', lang as Lang);
+    writeText(db, r.id, lang as Lang, { name: row.name, description: row.description, messages: c.messages, inputs: c.inputs, blocks });
+  }
+}
+
 export function seedBuiltins(db: DB) {
   migrateComponentNames(db);
   retirePersonasComponent(db);
   upgradeLegacyBuiltins(db);
+  upgradeContinuityBuiltin(db);
   const deleted = new Set(getSettingsValue<string[]>(db, 'deletedBuiltins', []));
   const deletedTexts = new Set(getSettingsValue<string[]>(db, 'deletedBuiltinTexts', []));
   const allTexts = loadTexts(db);

@@ -145,7 +145,7 @@ export const BLOCK_DEFS: BlockDef[] = [
   {
     kind: 'related',
     label: N_('Related passages'),
-    hint: N_('Passages from other scenes that resemble the text, found by meaning (semantic search). Needs an embedding model in Settings → Semantic search.'),
+    hint: N_('Passages from other scenes that resemble the text, found by meaning (semantic search). Needs an embedding model in Settings → General → Semantic search.'),
     group: 'context',
     types: [BEAT, CONT, EDIT, CHAT, CHK],
     defaults: (t) => on(t === CHK),
