@@ -1444,5 +1444,29 @@
   "Aliases, separated by commas": "Псевдоніми через кому",
   "Create entry": "Створити запис",
   "Will not be proposed again for this novel": "Більше не пропонуватиметься для цього роману",
-  "Ignore": "Ігнорувати"
+  "Ignore": "Ігнорувати",
+  "Nothing to merge.": "Нічого об'єднувати.",
+  "Only entries of the same level (novel or series) can be merged.": "Об'єднувати можна лише записи одного рівня (роман або серія).",
+  "Same name or alias": "Однакова назва або псевдонім",
+  "One name contains the other": "Одна назва містить іншу",
+  "Almost the same name": "Майже однакові назви",
+  "{n} possible duplicates: entries that look like the same thing under two names.": {
+    "one": "{n} можливий дублікат: записи, схожі на те саме під двома назвами.",
+    "few": "{n} можливі дублікати: записи, схожі на те саме під двома назвами.",
+    "many": "{n} можливих дублікатів: записи, схожі на те саме під двома назвами.",
+    "other": "{n} можливого дубліката: записи, схожі на те саме під двома назвами."
+  },
+  "Review": "Переглянути",
+  "Possible duplicates": "Можливі дублікати",
+  "Merged into “{name}”. A backup was made first.": "Об'єднано в «{name}». Перед цим створено резервну копію.",
+  "stays": "залишається",
+  "After merging": "Після об'єднання",
+  "POV, relationships, pins and chat context of the other entries will point to “{name}”; the other entries are deleted.": {
+    "one": "POV, зв'язки, закріплення й контекст чатів іншого запису перейдуть до «{name}»; інший запис буде видалено.",
+    "few": "POV, зв'язки, закріплення й контекст чатів інших записів перейдуть до «{name}»; інші записи буде видалено.",
+    "many": "POV, зв'язки, закріплення й контекст чатів інших записів перейдуть до «{name}»; інші записи буде видалено.",
+    "other": "POV, зв'язки, закріплення й контекст чатів інших записів перейдуть до «{name}»; інші записи буде видалено."
+  },
+  "Merge into “{name}”": "Об'єднати в «{name}»",
+  "They are different": "Це різні записи"
 }

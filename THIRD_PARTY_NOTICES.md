@@ -2,7 +2,7 @@
 
 ## LoneWriter
 
-Two features follow ideas from LoneWriter; their prompt texts, JSON formats and code in
+Three features follow ideas from LoneWriter; their prompt texts, JSON formats and code in
 Novelmaker are new:
 
 - The continuity check (`shared/src/continuity.ts`) follows the rules of LoneWriter's
@@ -10,6 +10,8 @@ Novelmaker are new:
 - The codex proposals (`shared/src/codexProposals.ts`) follow LoneWriter's "MPC": the AI
   proposes entries for named things missing from the codex, and the author accepts or
   ignores each one.
+- The possible-duplicates check (`shared/src/codex/duplicates.ts`) follows LoneWriter's
+  duplicate detection: Jaro-Winkler similarity and grouping of related entries.
 
 Source: https://github.com/sergio-snchez/LoneWriter
 

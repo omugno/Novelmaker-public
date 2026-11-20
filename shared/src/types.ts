@@ -33,6 +33,8 @@ export interface NovelSettings {
   pins?: PinRef[];
   /** Names the author ignored in "Propose codex entries" (proposalKey), so they are not proposed again */
   ignoredCodexNames?: string[];
+  /** Pairs of codex entries the author marked as different (pairKey), not suggested as duplicates again */
+  notDuplicateCodexPairs?: string[];
 }
 
 export interface PinRef {

@@ -1350,5 +1350,25 @@
   "Aliases, separated by commas": "Alias, séparés par des virgules",
   "Create entry": "Créer la fiche",
   "Will not be proposed again for this novel": "Ne sera plus proposé pour ce roman",
-  "Ignore": "Ignorer"
+  "Ignore": "Ignorer",
+  "Nothing to merge.": "Rien à fusionner.",
+  "Only entries of the same level (novel or series) can be merged.": "Seules des fiches du même niveau (roman ou série) peuvent être fusionnées.",
+  "Same name or alias": "Même nom ou alias",
+  "One name contains the other": "Un nom contient l’autre",
+  "Almost the same name": "Noms presque identiques",
+  "{n} possible duplicates: entries that look like the same thing under two names.": {
+    "one": "{n} doublon possible : des fiches qui semblent être la même chose sous deux noms.",
+    "other": "{n} doublons possibles : des fiches qui semblent être la même chose sous deux noms."
+  },
+  "Review": "Examiner",
+  "Possible duplicates": "Doublons possibles",
+  "Merged into “{name}”. A backup was made first.": "Fusionnées dans « {name} ». Une sauvegarde a été faite avant.",
+  "stays": "reste",
+  "After merging": "Après la fusion",
+  "POV, relationships, pins and chat context of the other entries will point to “{name}”; the other entries are deleted.": {
+    "one": "Le POV, les relations, les épingles et le contexte des chats de l’autre fiche pointeront vers « {name} » ; l’autre fiche est supprimée.",
+    "other": "Le POV, les relations, les épingles et le contexte des chats des autres fiches pointeront vers « {name} » ; les autres fiches sont supprimées."
+  },
+  "Merge into “{name}”": "Fusionner dans « {name} »",
+  "They are different": "Ce sont des fiches différentes"
 }

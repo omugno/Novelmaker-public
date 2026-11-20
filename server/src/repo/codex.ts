@@ -190,6 +190,27 @@ function redirectCodex(db: DB, from: string, to: string) {
   db.prepare('DELETE FROM codex_entries WHERE id = ?').run(from);
 }
 
+/**
+ * Merges other entries into one (author's choice, see shared/codex/duplicates.ts): the kept entry gets
+ * the merged fields, every reference to the others (POV, relations, pins, chat context) moves to it,
+ * and the others are deleted. Only entries of the same level (novel or series).
+ */
+export function mergeCodexInto(db: DB, keepId: string, otherIds: string[], patch: CodexInput): CodexEntry {
+  const keep = getCodex(db, keepId);
+  const others = [...new Set(otherIds)].filter((id) => id !== keepId).map((id) => getCodex(db, id));
+  if (!others.length) throw new HttpError(400, t('Nothing to merge.'));
+  if (others.some((o) => o.novelId !== keep.novelId || o.seriesId !== keep.seriesId))
+    throw new HttpError(400, t('Only entries of the same level (novel or series) can be merged.'));
+  return db.transaction(() => {
+    for (const o of others) redirectCodex(db, o.id, keep.id);
+    const p = { ...patch };
+    delete p.level;
+    delete (p as { novelId?: string }).novelId;
+    updateRow(db, 'codex_entries', keep.id, p as Record<string, unknown>, CODEX_SPEC);
+    return getCodex(db, keep.id);
+  })();
+}
+
 /** Identische Band-Kopien von Serien-Einträgen entfernen; Verweise zeigen danach auf den Serien-Eintrag. */
 export function mergeCodexDuplicates(db: DB, novelId: string): { merged: number; variants: number } {
   const dup = findCodexDuplicates(db, novelId);

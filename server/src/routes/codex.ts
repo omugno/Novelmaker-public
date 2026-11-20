@@ -21,6 +21,11 @@ export function registerCodexRoutes(app: FastifyInstance, { db }: AppContext) {
     createBackup(db, getAppSettings(db).backupsToKeep, 'pre-codex-merge');
     return C.mergeCodexDuplicates(db, req.params.id);
   });
+  /** Merge other entries into this one (backup first). */
+  app.post<{ Params: P; Body: { otherIds: string[]; patch: C.CodexInput } }>('/api/codex/:id/merge', async (req) => {
+    createBackup(db, getAppSettings(db).backupsToKeep, 'pre-codex-merge');
+    return C.mergeCodexInto(db, req.params.id, req.body?.otherIds ?? [], req.body?.patch ?? {});
+  });
   app.get<{ Params: P }>('/api/codex/:id', async (req) => C.getCodex(db, req.params.id));
   app.patch<{ Params: P; Body: C.CodexInput & { novelId?: string } }>('/api/codex/:id', async (req) => C.updateCodex(db, req.params.id, req.body));
   app.delete<{ Params: P }>('/api/codex/:id', async (req) => {

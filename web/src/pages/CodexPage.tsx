@@ -9,6 +9,7 @@ import { isPinned, usePins } from '../lib/pins';
 import { toast } from '../lib/store';
 import { Badge, Button, cn, confirmDialog, Empty, Input, Spinner } from '../components/ui';
 import { CodexEntryEditor } from '../components/CodexEntryEditor';
+import { SimilarEntriesBanner } from '../components/SimilarEntries';
 import { t, tn, tr } from '../lib/i18n';
 
 export function CodexPage() {
@@ -66,6 +67,7 @@ export function CodexPage() {
         <div className="min-h-0 flex-1 overflow-y-auto px-2 pb-2">
           {isLoading && <Spinner />}
           {novel?.seriesId && <DuplicateBanner novelId={novelId} codexKey={entries.length} />}
+          {novel && <SimilarEntriesBanner novel={novel} entries={entries} />}
           {CODEX_TYPES.map((ct) => {
             const list = filtered.filter((e) => e.type === ct.value);
             if (!list.length) return null;

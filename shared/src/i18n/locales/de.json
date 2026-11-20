@@ -1344,5 +1344,25 @@
   "Aliases, separated by commas": "Aliase, durch Kommas getrennt",
   "Create entry": "Eintrag anlegen",
   "Will not be proposed again for this novel": "Wird für diesen Roman nicht mehr vorgeschlagen",
-  "Ignore": "Ignorieren"
+  "Ignore": "Ignorieren",
+  "Nothing to merge.": "Nichts zum Zusammenführen.",
+  "Only entries of the same level (novel or series) can be merged.": "Nur Einträge derselben Ebene (Roman oder Serie) lassen sich zusammenführen.",
+  "Same name or alias": "Gleicher Name oder Alias",
+  "One name contains the other": "Ein Name enthält den anderen",
+  "Almost the same name": "Fast gleicher Name",
+  "{n} possible duplicates: entries that look like the same thing under two names.": {
+    "one": "{n} mögliches Duplikat: Einträge, die dasselbe unter zwei Namen zu sein scheinen.",
+    "other": "{n} mögliche Duplikate: Einträge, die dasselbe unter zwei Namen zu sein scheinen."
+  },
+  "Review": "Prüfen",
+  "Possible duplicates": "Mögliche Duplikate",
+  "Merged into “{name}”. A backup was made first.": "In „{name}“ zusammengeführt. Vorher wurde eine Sicherung angelegt.",
+  "stays": "bleibt",
+  "After merging": "Nach dem Zusammenführen",
+  "POV, relationships, pins and chat context of the other entries will point to “{name}”; the other entries are deleted.": {
+    "one": "POV, Beziehungen, Anheftungen und Chat-Kontext des anderen Eintrags zeigen dann auf „{name}“; der andere Eintrag wird gelöscht.",
+    "other": "POV, Beziehungen, Anheftungen und Chat-Kontext der anderen Einträge zeigen dann auf „{name}“; die anderen Einträge werden gelöscht."
+  },
+  "Merge into “{name}”": "In „{name}“ zusammenführen",
+  "They are different": "Sind verschieden"
 }

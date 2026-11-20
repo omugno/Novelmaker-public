@@ -4,6 +4,7 @@ export * from './codec';
 export * from './tokens';
 export * from './codex/matcher';
 export * from './codex/context';
+export * from './codex/duplicates';
 export * from './template/parser';
 export * from './template/data';
 export * from './template/values';

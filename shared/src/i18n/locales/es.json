@@ -1350,5 +1350,25 @@
   "Aliases, separated by commas": "Alias, separados por comas",
   "Create entry": "Crear ficha",
   "Will not be proposed again for this novel": "No se volverá a proponer en esta novela",
-  "Ignore": "Ignorar"
+  "Ignore": "Ignorar",
+  "Nothing to merge.": "No hay nada que fusionar.",
+  "Only entries of the same level (novel or series) can be merged.": "Solo se pueden fusionar fichas del mismo nivel (novela o serie).",
+  "Same name or alias": "Mismo nombre o alias",
+  "One name contains the other": "Un nombre contiene al otro",
+  "Almost the same name": "Nombres casi iguales",
+  "{n} possible duplicates: entries that look like the same thing under two names.": {
+    "one": "{n} posible duplicado: fichas que parecen lo mismo con dos nombres.",
+    "other": "{n} posibles duplicados: fichas que parecen lo mismo con dos nombres."
+  },
+  "Review": "Revisar",
+  "Possible duplicates": "Posibles duplicados",
+  "Merged into “{name}”. A backup was made first.": "Fusionadas en «{name}». Antes se hizo una copia de seguridad.",
+  "stays": "se queda",
+  "After merging": "Después de fusionar",
+  "POV, relationships, pins and chat context of the other entries will point to “{name}”; the other entries are deleted.": {
+    "one": "El POV, las relaciones, los anclajes y el contexto de chats de la otra ficha pasarán a «{name}»; la otra ficha se borra.",
+    "other": "El POV, las relaciones, los anclajes y el contexto de chats de las otras fichas pasarán a «{name}»; las otras fichas se borran."
+  },
+  "Merge into “{name}”": "Fusionar en «{name}»",
+  "They are different": "No son la misma"
 }

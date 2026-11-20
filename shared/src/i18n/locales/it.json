@@ -1350,5 +1350,25 @@
   "Aliases, separated by commas": "Alias, separati da virgole",
   "Create entry": "Crea voce",
   "Will not be proposed again for this novel": "Non verrà più proposto per questo romanzo",
-  "Ignore": "Ignora"
+  "Ignore": "Ignora",
+  "Nothing to merge.": "Niente da unire.",
+  "Only entries of the same level (novel or series) can be merged.": "Si possono unire solo voci dello stesso livello (romanzo o serie).",
+  "Same name or alias": "Stesso nome o alias",
+  "One name contains the other": "Un nome contiene l’altro",
+  "Almost the same name": "Nomi quasi uguali",
+  "{n} possible duplicates: entries that look like the same thing under two names.": {
+    "one": "{n} possibile duplicato: voci che sembrano la stessa cosa con due nomi.",
+    "other": "{n} possibili duplicati: voci che sembrano la stessa cosa con due nomi."
+  },
+  "Review": "Rivedi",
+  "Possible duplicates": "Possibili duplicati",
+  "Merged into “{name}”. A backup was made first.": "Unite in «{name}». Prima è stato fatto un backup.",
+  "stays": "resta",
+  "After merging": "Dopo l’unione",
+  "POV, relationships, pins and chat context of the other entries will point to “{name}”; the other entries are deleted.": {
+    "one": "POV, relazioni, elementi fissati e contesto delle chat dell’altra voce passeranno a «{name}»; l’altra voce viene eliminata.",
+    "other": "POV, relazioni, elementi fissati e contesto delle chat delle altre voci passeranno a «{name}»; le altre voci vengono eliminate."
+  },
+  "Merge into “{name}”": "Unisci in «{name}»",
+  "They are different": "Sono diverse"
 }
