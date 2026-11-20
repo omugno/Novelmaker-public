@@ -2,9 +2,14 @@
 
 ## LoneWriter
 
-The continuity check (`shared/src/continuity.ts`) follows the rules of the "Oracle" in
-LoneWriter: the codex is the truth, no style critique, and a sparse entry is not an error.
-The prompt text, the JSON format and the code in Novelmaker are new.
+Two features follow ideas from LoneWriter; their prompt texts, JSON formats and code in
+Novelmaker are new:
+
+- The continuity check (`shared/src/continuity.ts`) follows the rules of LoneWriter's
+  "Oracle": the codex is the truth, no style critique, and a sparse entry is not an error.
+- The codex proposals (`shared/src/codexProposals.ts`) follow LoneWriter's "MPC": the AI
+  proposes entries for named things missing from the codex, and the author accepts or
+  ignores each one.
 
 Source: https://github.com/sergio-snchez/LoneWriter
 

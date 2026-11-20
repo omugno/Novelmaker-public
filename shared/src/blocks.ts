@@ -29,6 +29,7 @@ import {
   type PlaceholderKey,
 } from './promptlang';
 import { CONTINUITY_TYPE, ROLE_CONTINUITY, TASK_CONTINUITY } from './continuity';
+import { CODEX_PROPOSAL_TYPE, ROLE_PROPOSALS, TASK_PROPOSALS } from './codexProposals';
 
 // ---------------------------------------------------------------- Typen
 
@@ -74,9 +75,9 @@ export interface BlockPromptSpec {
   options: PromptOption[];
 }
 
-export type PromptKindForBlocks = 'scene-beat-completion' | 'continue-writing' | 'text-replacement' | 'summary' | 'workshop-chat' | 'continuity-check';
+export type PromptKindForBlocks = 'scene-beat-completion' | 'continue-writing' | 'text-replacement' | 'summary' | 'workshop-chat' | 'continuity-check' | 'codex-proposals';
 
-export const BLOCK_PROMPT_TYPES: PromptKindForBlocks[] = ['scene-beat-completion', 'continue-writing', 'text-replacement', 'summary', 'workshop-chat', 'continuity-check'];
+export const BLOCK_PROMPT_TYPES: PromptKindForBlocks[] = ['scene-beat-completion', 'continue-writing', 'text-replacement', 'summary', 'workshop-chat', 'continuity-check', 'codex-proposals'];
 
 const BEAT: PromptType = 'scene-beat-completion';
 const CONT: PromptType = 'continue-writing';
@@ -85,7 +86,9 @@ const SUM: PromptType = 'summary';
 const CHAT: PromptType = 'workshop-chat';
 /** Continuity check: the scene (or a selection) is checked against codex, story so far and the previous scene */
 const CHK: PromptType = CONTINUITY_TYPE;
-const ALL: PromptType[] = [BEAT, CONT, EDIT, SUM, CHAT, CHK];
+/** Codex proposals: the AI reads the scene (or a selection) and proposes entries that are missing */
+const CPR: PromptType = CODEX_PROPOSAL_TYPE;
+const ALL: PromptType[] = [BEAT, CONT, EDIT, SUM, CHAT, CHK, CPR];
 
 export interface BlockDef {
   kind: BlockKind;
@@ -107,7 +110,7 @@ export const BLOCK_DEFS: BlockDef[] = [
     hint: N_('Whatever is under “Novel → Additional instructions for the AI”.'),
     group: 'instructions',
     types: ALL,
-    defaults: (t) => on(t !== SUM && t !== CHK),
+    defaults: (t) => on(t !== SUM && t !== CHK && t !== CPR),
   },
   {
     kind: 'bannedWords',
@@ -124,7 +127,7 @@ export const BLOCK_DEFS: BlockDef[] = [
     hint: N_('Title, author, language, tense, series and volume, blurb.'),
     group: 'context',
     types: ALL,
-    defaults: (t) => on(t === CHAT || t === CHK),
+    defaults: (t) => on(t === CHAT || t === CHK || t === CPR),
   },
   {
     kind: 'codex',
@@ -206,7 +209,7 @@ export const BLOCK_DEFS: BlockDef[] = [
     label: N_('Selected text'),
     hint: N_('The passage to be edited or checked.'),
     group: 'text',
-    types: [EDIT, CHK],
+    types: [EDIT, CHK, CPR],
     defaults: () => on(true),
   },
 ];
@@ -298,6 +301,8 @@ export function defaultTexts(type: PromptType, lang: Lang = getLang()): Pick<Blo
       return { role: ROLE_CHAT[lang], task: TASK_CHAT[lang], options: [] };
     case CHK:
       return { role: ROLE_CONTINUITY[lang], task: TASK_CONTINUITY[lang], options: [] };
+    case CPR:
+      return { role: ROLE_PROPOSALS[lang], task: TASK_PROPOSALS[lang], options: [] };
     default:
       return { role: '', task: '', options: [] };
   }
@@ -484,7 +489,7 @@ export function compileBlockPrompt(spec: BlockPromptSpec, type: PromptType, lang
     task.push(`{#if ${e}}\n${isEdit ? F.afterEdit : F.afterWrite}:\n${tag(F.tagAfter, `{${e}}`)}\n{#endif}`);
   }
   if (type === EDIT && !b('selection')) warnings.push(t('“Selected text” is off — the AI won’t receive the passage to edit.'));
-  if (type === CHK && !b('selection')) warnings.push(t('“Selected text” is off — the AI won’t receive the passage to check.'));
+  if ((type === CHK || type === CPR) && !b('selection')) warnings.push(t('“Selected text” is off — the AI won’t receive the passage to check.'));
 
   const role = compileText(spec.role, options, warnings);
   inputs.unshift(...options.map((o) => optionToInput(o, lang)));

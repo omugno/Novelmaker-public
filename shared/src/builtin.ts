@@ -695,6 +695,20 @@ const BLOCK_BUILTINS: BlockBuiltinDef[] = [
     spec: (lang) => newBlockSpec('continuity-check', lang),
   },
   {
+    key: 'codex-proposals',
+    type: 'codex-proposals',
+    name: { de: 'Kodex-Einträge vorschlagen', en: 'Propose codex entries', es: 'Proponer fichas', uk: 'Запропонувати записи кодексу', it: 'Proponi voci del codex', fr: 'Proposer des fiches' },
+    description: {
+      de: 'Liest die Szene (oder die Markierung) und schlägt Kodex-Einträge für benannte Figuren, Orte, Gegenstände und Begriffe vor, die noch fehlen.',
+      en: 'Reads the scene (or the selection) and proposes codex entries for named characters, places, objects and concepts that are missing.',
+      es: 'Lee la escena (o la selección) y propone fichas del códice para los personajes, lugares, objetos y conceptos con nombre que todavía faltan.',
+      uk: 'Читає сцену (або виділення) й пропонує записи кодексу для названих персонажів, місць, предметів і понять, яких ще бракує.',
+      it: 'Legge la scena (o la selezione) e propone voci del codex per personaggi, luoghi, oggetti e concetti con nome che ancora mancano.',
+      fr: 'Lit la scène (ou la sélection) et propose des fiches du codex pour les personnages, lieux, objets et concepts nommés qui manquent encore.',
+    },
+    spec: (lang) => newBlockSpec('codex-proposals', lang),
+  },
+  {
     key: 'chat',
     type: 'workshop-chat',
     name: { de: 'Freier Chat', en: 'Free chat', es: 'Chat libre', uk: 'Вільний чат', it: 'Chat libera', fr: 'Chat libre' },

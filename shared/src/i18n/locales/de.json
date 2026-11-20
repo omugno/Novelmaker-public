@@ -1324,5 +1324,25 @@
   },
   "Semantic search": "Semantische Suche",
   "Embedding model (OpenAI-compatible /embeddings, e.g. bge-m3). It finds passages by meaning: for “Search → By meaning” and the “Related passages” block of the continuity check. Off when empty.": "Embedding-Modell (OpenAI-kompatibles /embeddings, z. B. bge-m3). Findet Stellen nach Bedeutung: für „Suche → Nach Bedeutung“ und den Baustein „Verwandte Stellen“ der Kontinuitätsprüfung. Leer = aus.",
-  "Turn off": "Ausschalten"
+  "Turn off": "Ausschalten",
+  "Codex proposals": "Kodex-Vorschläge",
+  "Codex entry “{name}” created.": "Kodex-Eintrag „{name}“ angelegt.",
+  "New entries": "Neue Einträge",
+  "The AI reads the scene (or the selected text) and proposes codex entries for named characters, places and objects that are not in the codex yet.": "Die KI liest die Szene (oder den markierten Text) und schlägt Kodex-Einträge für benannte Figuren, Orte und Gegenstände vor, die noch nicht im Kodex stehen.",
+  "Propose from the selection": "Aus der Markierung vorschlagen",
+  "Propose entries": "Einträge vorschlagen",
+  "The answer could not be read as a list of entries. Try again or choose another model.": "Die Antwort ließ sich nicht als Liste von Einträgen lesen. Versuche es noch einmal oder wähle ein anderes Modell.",
+  "Nothing new for the codex.": "Nichts Neues für den Kodex.",
+  "{n} proposed entries": {
+    "one": "{n} vorgeschlagener Eintrag",
+    "other": "{n} vorgeschlagene Einträge"
+  },
+  "{n} proposals left out (already in the codex, not in the text, or ignored).": {
+    "one": "{n} Vorschlag ausgelassen (schon im Kodex, nicht im Text oder ignoriert).",
+    "other": "{n} Vorschläge ausgelassen (schon im Kodex, nicht im Text oder ignoriert)."
+  },
+  "Aliases, separated by commas": "Aliase, durch Kommas getrennt",
+  "Create entry": "Eintrag anlegen",
+  "Will not be proposed again for this novel": "Wird für diesen Roman nicht mehr vorgeschlagen",
+  "Ignore": "Ignorieren"
 }

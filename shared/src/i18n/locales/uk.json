@@ -1420,5 +1420,29 @@
   },
   "Semantic search": "Семантичний пошук",
   "Embedding model (OpenAI-compatible /embeddings, e.g. bge-m3). It finds passages by meaning: for “Search → By meaning” and the “Related passages” block of the continuity check. Off when empty.": "Модель ембедингів (/embeddings, сумісний з OpenAI, напр. bge-m3). Знаходить уривки за змістом: для «Пошук → За змістом» і блоку «Пов'язані уривки» перевірки узгодженості. Порожньо = вимкнено.",
-  "Turn off": "Вимкнути"
+  "Turn off": "Вимкнути",
+  "Codex proposals": "Пропозиції записів кодексу",
+  "Codex entry “{name}” created.": "Запис кодексу «{name}» створено.",
+  "New entries": "Нові записи",
+  "The AI reads the scene (or the selected text) and proposes codex entries for named characters, places and objects that are not in the codex yet.": "ШІ читає сцену (або виділений текст) і пропонує записи для названих персонажів, місць і предметів, яких ще немає в кодексі.",
+  "Propose from the selection": "Запропонувати з виділеного",
+  "Propose entries": "Запропонувати записи",
+  "The answer could not be read as a list of entries. Try again or choose another model.": "Відповідь не вдалося прочитати як список записів. Спробуйте ще раз або виберіть іншу модель.",
+  "Nothing new for the codex.": "Нічого нового для кодексу.",
+  "{n} proposed entries": {
+    "one": "{n} запропонований запис",
+    "few": "{n} запропоновані записи",
+    "many": "{n} запропонованих записів",
+    "other": "{n} запропонованого запису"
+  },
+  "{n} proposals left out (already in the codex, not in the text, or ignored).": {
+    "one": "{n} пропозицію відкинуто (уже в кодексі, немає в тексті або проігноровано).",
+    "few": "{n} пропозиції відкинуто (уже в кодексі, немає в тексті або проігноровано).",
+    "many": "{n} пропозицій відкинуто (уже в кодексі, немає в тексті або проігноровано).",
+    "other": "{n} пропозиції відкинуто (уже в кодексі, немає в тексті або проігноровано)."
+  },
+  "Aliases, separated by commas": "Псевдоніми через кому",
+  "Create entry": "Створити запис",
+  "Will not be proposed again for this novel": "Більше не пропонуватиметься для цього роману",
+  "Ignore": "Ігнорувати"
 }

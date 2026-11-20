@@ -26,3 +26,4 @@ export * from './i18n/extract';
 export * from './promptlang';
 export * from './continuity';
 export * from './semantic';
+export * from './codexProposals';

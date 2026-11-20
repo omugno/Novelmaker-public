@@ -24,6 +24,7 @@ import { openCodexModal } from '../components/CodexModal';
 import { aiPinnedCodexIds } from '../lib/pins';
 import { deleteOutlineItem } from './OutlineTree';
 import { ContinuityPanel } from './ContinuityPanel';
+import { CodexProposalsPanel } from './CodexProposalsPanel';
 import { t, tn } from '../lib/i18n';
 
 type Tab = 'scene' | 'codex' | 'ai' | 'continuity' | 'history';
@@ -325,6 +326,9 @@ function SceneCodex({ novelId, sceneId }: { novelId: string; sceneId: string }) 
           ))}
         </div>
       )}
+      <div className="border-t border-stone-200 pt-3 dark:border-stone-800">
+        <CodexProposalsPanel novelId={novelId} sceneId={sceneId} />
+      </div>
     </div>
   );
 }

@@ -31,6 +31,8 @@ export interface NovelSettings {
   summaryPrompts?: { scene?: string; chapter?: string; novel?: string };
   /** Neben dem Text angeheftete Kodex-Einträge und Szenen (Snippets haben ein eigenes Feld). */
   pins?: PinRef[];
+  /** Names the author ignored in "Propose codex entries" (proposalKey), so they are not proposed again */
+  ignoredCodexNames?: string[];
 }
 
 export interface PinRef {
@@ -271,6 +273,7 @@ export type PromptType =
   | 'summary'
   | 'workshop-chat'
   | 'continuity-check'
+  | 'codex-proposals'
   | 'component'
   | (string & {});
 
@@ -281,6 +284,7 @@ export const PROMPT_TYPES: { value: PromptType; label: string }[] = [
   { value: 'summary', label: N_('Summary') },
   { value: 'workshop-chat', label: N_('Chat') },
   { value: 'continuity-check', label: N_('Continuity check') },
+  { value: 'codex-proposals', label: N_('Codex proposals') },
   { value: 'component', label: N_('Component') },
 ];
 
@@ -499,7 +503,7 @@ export const DEFAULT_APP_SETTINGS: AppSettings = {
 
 /** Anfrage für eine Generierung bzw. Vorschau. */
 export interface GenerateRequest {
-  kind: 'beat' | 'continue' | 'rewrite' | 'chat' | 'summary' | 'preview' | 'continuity';
+  kind: 'beat' | 'continue' | 'rewrite' | 'chat' | 'summary' | 'preview' | 'continuity' | 'proposals';
   promptId?: string;
   /** Ungespeicherter Prompt (Werkstatt-Vorschau) */
   prompt?: Pick<Prompt, 'type' | 'name' | 'messages' | 'inputs'>;

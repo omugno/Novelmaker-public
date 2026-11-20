@@ -1,6 +1,8 @@
 // Generierung: Parameter bestimmen, streamen, protokollieren.
 import type { ServerResponse } from 'node:http';
 import {
+  CODEX_PROPOSAL_RESPONSE_FORMAT,
+  CODEX_PROPOSAL_TYPE,
   CONTINUITY_RESPONSE_FORMAT,
   CONTINUITY_TYPE,
   WORDS_OPTION_NAMES,
@@ -32,6 +34,7 @@ export function buildParams(db: DB, model: ModelRef, prep: Prepared | null, over
   // Continuity check: ask for JSON in a fixed shape (llama.cpp turns the schema into a grammar).
   // A collection can switch it off with "response_format": "" (some servers reject the field).
   if (prep?.prompt.type === CONTINUITY_TYPE && !('response_format' in params)) params.response_format = CONTINUITY_RESPONSE_FORMAT;
+  if (prep?.prompt.type === CODEX_PROPOSAL_TYPE && !('response_format' in params)) params.response_format = CODEX_PROPOSAL_RESPONSE_FORMAT;
   for (const [k, v] of Object.entries(params)) if (v === '' || v === null) delete params[k];
   return params;
 }

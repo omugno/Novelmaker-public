@@ -1330,5 +1330,25 @@
   },
   "Semantic search": "Ricerca semantica",
   "Embedding model (OpenAI-compatible /embeddings, e.g. bge-m3). It finds passages by meaning: for “Search → By meaning” and the “Related passages” block of the continuity check. Off when empty.": "Modello di embedding (/embeddings compatibile con OpenAI, ad es. bge-m3). Trova passaggi per significato: per «Ricerca → Per significato» e il blocco «Passaggi correlati» della verifica di coerenza. Vuoto = disattivata.",
-  "Turn off": "Disattiva"
+  "Turn off": "Disattiva",
+  "Codex proposals": "Proposte di voci",
+  "Codex entry “{name}” created.": "Voce «{name}» creata.",
+  "New entries": "Nuove voci",
+  "The AI reads the scene (or the selected text) and proposes codex entries for named characters, places and objects that are not in the codex yet.": "L’IA legge la scena (o il testo selezionato) e propone voci per personaggi, luoghi e oggetti con nome che non sono ancora nel codex.",
+  "Propose from the selection": "Proponi dalla selezione",
+  "Propose entries": "Proponi voci",
+  "The answer could not be read as a list of entries. Try again or choose another model.": "Non è stato possibile leggere la risposta come elenco di voci. Riprova o scegli un altro modello.",
+  "Nothing new for the codex.": "Niente di nuovo per il codex.",
+  "{n} proposed entries": {
+    "one": "{n} voce proposta",
+    "other": "{n} voci proposte"
+  },
+  "{n} proposals left out (already in the codex, not in the text, or ignored).": {
+    "one": "{n} proposta scartata (già nel codex, non nel testo o ignorata).",
+    "other": "{n} proposte scartate (già nel codex, non nel testo o ignorate)."
+  },
+  "Aliases, separated by commas": "Alias, separati da virgole",
+  "Create entry": "Crea voce",
+  "Will not be proposed again for this novel": "Non verrà più proposto per questo romanzo",
+  "Ignore": "Ignora"
 }
