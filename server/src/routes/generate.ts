@@ -7,6 +7,7 @@ import { getProvider } from '../repo/llm';
 import { buildParams, estimateGeneration, runGeneration, SseWriter } from '../services/generate';
 import { prepareRender, type Prepared } from '../services/promptdata';
 import { relatedForRequest } from '../services/semantic';
+import { fitNotes, fitPrompt, promptLimit } from '../services/budget';
 
 type Req = GenerateRequest & { chapterId?: string | null; context?: RefValue[] };
 
@@ -22,23 +23,27 @@ export function registerGenerateRoutes(app: FastifyInstance, ctx: AppContext) {
   const { db } = ctx;
 
   /**
-   * Renders the prompt; if it asks for related passages (semantic search), looks them up first and
-   * renders again with them. A note (search off, model unreachable) becomes an info warning.
+   * Renders the prompt; if it asks for related passages (semantic search), looks them up first
+   * (`withRelated`; not for the quick estimate). Then fits it into the model's context window,
+   * trimming related passages and the story so far (services/budget.ts). Notes become info warnings.
    */
-  const prepareWithRelated = async (body: Req, signal?: AbortSignal): Promise<Prepared> => {
+  const preparePrompt = async (body: Req, { withRelated = true, signal }: { withRelated?: boolean; signal?: AbortSignal } = {}): Promise<Prepared> => {
     const first = prepareRender(db, body);
-    const rel = await relatedForRequest(db, body, first.prompt.messages, signal);
-    if (!rel.text && !rel.note) return first;
-    const prep = rel.text ? prepareRender(db, { ...body, related: rel.text } as Req) : first;
+    const rel = withRelated ? await relatedForRequest(db, body, first.prompt.messages, signal) : { passages: [], note: null };
+    const limit = body.model ? promptLimit(db, body.model, buildParams(db, body.model, first, body.params)) : null;
+    if (!rel.passages.length && !rel.note && limit == null) return first;
+    const fit = fitPrompt(db, body, rel.passages, limit);
+    const prep = fit.prep;
     if (rel.note) prep.result.warnings.push({ level: 'info', message: rel.note });
-    else prep.result.warnings.push({ level: 'info', message: t('Related passages: {n} from other scenes.', { n: rel.count }) });
+    else if (rel.passages.length) prep.result.warnings.push({ level: 'info', message: t('Related passages: {n} from other scenes.', { n: fit.passages.length }) });
+    prep.result.warnings.push(...fitNotes(fit));
     return prep;
   };
 
   /** Fertig gerenderte Nachrichten, Warnungen, Token-Zahl und Kodex-Auswahl – ohne KI-Aufruf. */
   app.post<{ Body: Req }>('/api/preview', async (req): Promise<PreviewResult & { params?: Record<string, unknown> }> => {
     const body = withChatHistory(ctx, req.body);
-    const prep = await prepareWithRelated(body);
+    const prep = await preparePrompt(body);
     const params = body.model ? buildParams(db, body.model, prep, body.params) : undefined;
     return {
       messages: prep.result.messages,
@@ -53,7 +58,7 @@ export function registerGenerateRoutes(app: FastifyInstance, ctx: AppContext) {
   /** Nur Tokens/Kosten schätzen (leichter als die Vorschau, für die Anzeige neben „Generieren“). */
   app.post<{ Body: Req }>('/api/estimate', async (req): Promise<EstimateResult> => {
     const body = withChatHistory(ctx, req.body);
-    const prep = prepareRender(db, body);
+    const prep = await preparePrompt(body, { withRelated: false });
     const params = body.model ? buildParams(db, body.model, prep, body.params) : {};
     return { ...estimateGeneration(db, body, prep, params), warnings: prep.result.warnings };
   });
@@ -68,7 +73,7 @@ export function registerGenerateRoutes(app: FastifyInstance, ctx: AppContext) {
     const sse = new SseWriter(reply.raw);
     let prep: Prepared;
     try {
-      prep = await prepareWithRelated(body, sse.abort.signal);
+      prep = await preparePrompt(body, { signal: sse.abort.signal });
       if (!prep.result.messages.length) throw new HttpError(400, t('The prompt doesn’t produce any messages.'));
     } catch (e) {
       sse.send('error', { message: (e as Error).message });

@@ -78,6 +78,8 @@ export interface BuildDataInput {
   chat?: { history: ChatMessageData[]; message: string };
   /** Related passages (semantic search), already formatted */
   related?: string;
+  /** Token limit for storySoFar when fitting into the context window */
+  storySoFarMaxTokens?: number;
 }
 
 export function buildPromptData(db: DB, inp: BuildDataInput, components?: PromptComponentData[]): PromptData {
@@ -111,6 +113,7 @@ export function buildPromptData(db: DB, inp: BuildDataInput, components?: Prompt
     pinnedCodexIds: (inp.pinnedCodexIds ?? []).map((id) => r(id)!),
     chat: inp.chat,
     related: inp.related ?? '',
+    storySoFarMaxTokens: inp.storySoFarMaxTokens,
   };
 }
 
@@ -155,9 +158,14 @@ export interface Prepared {
   result: RenderResult;
   components: PromptComponentData[];
   inputs: InputValues;
+  /** What the prompt was rendered with (to measure parts of it, e.g. storySoFar) */
+  data: PromptData;
 }
 
-export function prepareRender(db: DB, req: GenerateRequest & { chapterId?: string | null; context?: RefValue[]; related?: string }): Prepared {
+export function prepareRender(
+  db: DB,
+  req: GenerateRequest & { chapterId?: string | null; context?: RefValue[]; related?: string; storySoFarMaxTokens?: number },
+): Prepared {
   const prompt = resolvePrompt(db, req);
   const components = listComponents(db, prompt.lang);
   let inputs = req.inputs ?? {};
@@ -179,6 +187,7 @@ export function prepareRender(db: DB, req: GenerateRequest & { chapterId?: strin
       pinnedCodexIds: req.pinnedCodexIds,
       chat: req.chatHistory || req.kind === 'chat' ? { history: req.chatHistory ?? [], message: req.message ?? '' } : undefined,
       related: req.related,
+      storySoFarMaxTokens: req.storySoFarMaxTokens,
     },
     components,
   );
@@ -194,5 +203,5 @@ export function prepareRender(db: DB, req: GenerateRequest & { chapterId?: strin
       level: 'warning',
       message: t('The prompt doesn’t accept selected context (the “Choose context when running” block is off) — the selected context will be ignored.'),
     });
-  return { prompt, result, components, inputs };
+  return { prompt, result, components, inputs, data };
 }

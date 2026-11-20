@@ -1364,5 +1364,11 @@
     "other": "POV, Beziehungen, Anheftungen und Chat-Kontext der anderen Einträge zeigen dann auf „{name}“; die anderen Einträge werden gelöscht."
   },
   "Merge into “{name}”": "In „{name}“ zusammenführen",
-  "They are different": "Sind verschieden"
+  "They are different": "Sind verschieden",
+  "To fit the context window, {n} related passages were left out.": {
+    "one": "Damit alles ins Kontextfenster passt, wurde {n} verwandte Stelle ausgelassen.",
+    "other": "Damit alles ins Kontextfenster passt, wurden {n} verwandte Stellen ausgelassen."
+  },
+  "To fit the context window, the story so far keeps only the most recent part.": "Damit alles ins Kontextfenster passt, enthält die bisherige Handlung nur den neuesten Teil.",
+  "Even after trimming, the prompt (≈{tokens} tokens) is larger than the room the model has ({limit}).": "Auch gekürzt ist der Prompt (≈{tokens} Tokens) größer als der Platz, den das Modell hat ({limit})."
 }

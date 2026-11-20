@@ -1468,5 +1468,13 @@
     "other": "POV, зв'язки, закріплення й контекст чатів інших записів перейдуть до «{name}»; інші записи буде видалено."
   },
   "Merge into “{name}”": "Об'єднати в «{name}»",
-  "They are different": "Це різні записи"
+  "They are different": "Це різні записи",
+  "To fit the context window, {n} related passages were left out.": {
+    "one": "Щоб вміститися у вікно контексту, пропущено {n} пов'язаний уривок.",
+    "few": "Щоб вміститися у вікно контексту, пропущено {n} пов'язані уривки.",
+    "many": "Щоб вміститися у вікно контексту, пропущено {n} пов'язаних уривків.",
+    "other": "Щоб вміститися у вікно контексту, пропущено {n} пов'язаного уривка."
+  },
+  "To fit the context window, the story so far keeps only the most recent part.": "Щоб вміститися у вікно контексту, у попередніх подіях залишено лише найновішу частину.",
+  "Even after trimming, the prompt (≈{tokens} tokens) is larger than the room the model has ({limit}).": "Навіть після скорочення промпт (≈{tokens} токенів) більший за місце, яке має модель ({limit})."
 }

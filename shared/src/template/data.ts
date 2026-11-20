@@ -64,6 +64,8 @@ export interface PromptData {
   chat?: { history: ChatMessageData[]; message: string };
   /** Related passages from other scenes, found by semantic search before rendering (formatRelated) */
   related?: string;
+  /** Token limit for storySoFar (fitting into the context window): only the most recent part is kept */
+  storySoFarMaxTokens?: number;
 }
 
 export interface RenderablePrompt {

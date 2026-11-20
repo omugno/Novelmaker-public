@@ -1370,5 +1370,11 @@
     "other": "Le POV, les relations, les épingles et le contexte des chats des autres fiches pointeront vers « {name} » ; les autres fiches sont supprimées."
   },
   "Merge into “{name}”": "Fusionner dans « {name} »",
-  "They are different": "Ce sont des fiches différentes"
+  "They are different": "Ce sont des fiches différentes",
+  "To fit the context window, {n} related passages were left out.": {
+    "one": "Pour tenir dans la fenêtre de contexte, {n} passage lié a été omis.",
+    "other": "Pour tenir dans la fenêtre de contexte, {n} passages liés ont été omis."
+  },
+  "To fit the context window, the story so far keeps only the most recent part.": "Pour tenir dans la fenêtre de contexte, l’histoire jusqu’ici ne garde que la partie la plus récente.",
+  "Even after trimming, the prompt (≈{tokens} tokens) is larger than the room the model has ({limit}).": "Même raccourci, le prompt (≈{tokens} tokens) dépasse la place dont dispose le modèle ({limit})."
 }

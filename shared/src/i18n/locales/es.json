@@ -1370,5 +1370,11 @@
     "other": "El POV, las relaciones, los anclajes y el contexto de chats de las otras fichas pasarán a «{name}»; las otras fichas se borran."
   },
   "Merge into “{name}”": "Fusionar en «{name}»",
-  "They are different": "No son la misma"
+  "They are different": "No son la misma",
+  "To fit the context window, {n} related passages were left out.": {
+    "one": "Para caber en la ventana de contexto, se omitió {n} pasaje relacionado.",
+    "other": "Para caber en la ventana de contexto, se omitieron {n} pasajes relacionados."
+  },
+  "To fit the context window, the story so far keeps only the most recent part.": "Para caber en la ventana de contexto, la historia hasta ahora se queda solo con la parte más reciente.",
+  "Even after trimming, the prompt (≈{tokens} tokens) is larger than the room the model has ({limit}).": "Incluso recortado, el prompt (≈{tokens} tokens) es mayor que el espacio que tiene el modelo ({limit})."
 }

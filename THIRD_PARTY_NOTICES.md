@@ -2,7 +2,7 @@
 
 ## LoneWriter
 
-Three features follow ideas from LoneWriter; their prompt texts, JSON formats and code in
+Four features follow ideas from LoneWriter; their prompt texts, JSON formats and code in
 Novelmaker are new:
 
 - The continuity check (`shared/src/continuity.ts`) follows the rules of LoneWriter's
@@ -12,6 +12,8 @@ Novelmaker are new:
   ignores each one.
 - The possible-duplicates check (`shared/src/codex/duplicates.ts`) follows LoneWriter's
   duplicate detection: Jaro-Winkler similarity and grouping of related entries.
+- Fitting prompts into the context window (`server/src/services/budget.ts`) follows
+  LoneWriter's token budget: the compendium is never cut, the dispensable parts go first.
 
 Source: https://github.com/sergio-snchez/LoneWriter
 

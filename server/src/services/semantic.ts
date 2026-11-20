@@ -165,7 +165,7 @@ export async function searchNovel(
 const usesRelated = (messages: { text: string }[]) => messages.some((m) => /relatedPassages/.test(m.text));
 
 /**
- * Related passages for a generation request, as prompt text. Empty when the prompt does not use them;
+ * Related passages for a generation request, best first. Empty when the prompt does not use them;
  * a note instead of an error when semantic search is off or the model cannot be reached.
  */
 export async function relatedForRequest(
@@ -173,19 +173,19 @@ export async function relatedForRequest(
   req: GenerateRequest,
   messages: { text: string }[],
   signal?: AbortSignal,
-): Promise<{ text: string; count: number; note: string | null }> {
-  if (!usesRelated(messages)) return { text: '', count: 0, note: null };
-  if (!embeddingModel(db)) return { text: '', count: 0, note: t('Related passages: semantic search is off (Settings → General → Semantic search).') };
+): Promise<{ passages: RelatedPassage[]; note: string | null }> {
+  if (!usesRelated(messages)) return { passages: [], note: null };
+  if (!embeddingModel(db)) return { passages: [], note: t('Related passages: semantic search is off (Settings → General → Semantic search).') };
   const query = (req.selection?.trim() || req.message?.trim() || (req.textBefore ?? '').split(/\s+/).slice(-300).join(' ')).trim();
-  if (!query) return { text: '', count: 0, note: null };
+  if (!query) return { passages: [], note: null };
   try {
     const found = await searchNovel(db, req.novelId, query, {
       excludeSceneIds: req.sceneId ? [req.sceneId] : [],
       override: req.sceneId && req.sceneText != null ? { id: req.sceneId, text: req.sceneText } : undefined,
       signal,
     });
-    return { text: formatRelated(found), count: found.length, note: null };
+    return { passages: found, note: null };
   } catch (e) {
-    return { text: '', count: 0, note: t('Related passages left out: {error}', { error: (e as Error).message }) };
+    return { passages: [], note: t('Related passages left out: {error}', { error: (e as Error).message }) };
   }
 }

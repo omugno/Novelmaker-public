@@ -1370,5 +1370,11 @@
     "other": "POV, relazioni, elementi fissati e contesto delle chat delle altre voci passeranno a «{name}»; le altre voci vengono eliminate."
   },
   "Merge into “{name}”": "Unisci in «{name}»",
-  "They are different": "Sono diverse"
+  "They are different": "Sono diverse",
+  "To fit the context window, {n} related passages were left out.": {
+    "one": "Per rientrare nella finestra di contesto, è stato omesso {n} passaggio correlato.",
+    "other": "Per rientrare nella finestra di contesto, sono stati omessi {n} passaggi correlati."
+  },
+  "To fit the context window, the story so far keeps only the most recent part.": "Per rientrare nella finestra di contesto, la storia finora conserva solo la parte più recente.",
+  "Even after trimming, the prompt (≈{tokens} tokens) is larger than the room the model has ({limit}).": "Anche accorciato, il prompt (≈{tokens} token) è più grande dello spazio che ha il modello ({limit})."
 }

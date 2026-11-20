@@ -1,5 +1,6 @@
 // Funktionsregister der Template-Engine.
 // Namen ignorieren Groß-/Kleinschreibung. "types" legt fest, in welchen Prompt-Typen eine Funktion verfügbar ist.
+import { keepLatest } from '../tokens';
 import { firstWords, lastWords, countWords } from '../doc';
 import { N_, t, type Lang } from '../i18n';
 import { CODEX_TYPES, type CodexType } from '../types';
@@ -262,14 +263,19 @@ export const FUNCTIONS: FnDef[] = [
     sig: 'storySoFar',
     doc: N_('All scene summaries up to (not including) the current scene'),
     impl: (env) => {
-      const cur = env.currentLoc();
-      if (cur) return env.outlineText(env.scenes.slice(0, cur.index));
-      const ch = env.currentChapterLoc();
-      if (ch) {
-        const first = env.scenes.findIndex((s) => s.chapter.id === ch.chapter.id);
-        return env.outlineText(first >= 0 ? env.scenes.slice(0, first) : []);
-      }
-      return env.outlineText(env.scenes);
+      const full = () => {
+        const cur = env.currentLoc();
+        if (cur) return env.outlineText(env.scenes.slice(0, cur.index));
+        const ch = env.currentChapterLoc();
+        if (ch) {
+          const first = env.scenes.findIndex((s) => s.chapter.id === ch.chapter.id);
+          return env.outlineText(first >= 0 ? env.scenes.slice(0, first) : []);
+        }
+        return env.outlineText(env.scenes);
+      };
+      const text = full();
+      const max = env.data.storySoFarMaxTokens;
+      return max != null ? keepLatest(text, max).text : text;
     },
   },
   {
